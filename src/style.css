@@ -1,3 +1,6 @@
+* {
+    --airhacks-orange: orange;
+}
 main{
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -20,11 +23,11 @@ main{
 }
 
 header{
-    background: lightcoral;
+    background: var(--airhacks-orange, lightcoral);
     grid-area: header;
 }
 footer{
-    background: lightcoral;
+    background: var(--airhacks-orange, lightcoral);
     grid-area: footer;
 }
 nav{
