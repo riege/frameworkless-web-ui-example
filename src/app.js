@@ -1,10 +1,23 @@
 console.log("Hello, airhacks")
 
-const button = document.querySelector('button')
-const output = document.querySelector('output')
-const input = document.querySelector('input')
+class AirHacks {
 
-button.onclick = e => output.innerHTML = 'button clicked'
-console.dir(button)
+    constructor(name) {
+        this.message = `ask questions, ${name}!`
+    }
 
-input.onkeyup = e => output.innerHTML = `<h2>${e.target.value}</h2>`
+    getMessage() {
+        return this.message
+    }
+
+    get content() {
+        return "-> " + this.message
+    }
+
+    static create() {
+        return "string created!"
+    }
+}
+
+const airhacks = new AirHacks('test')
+console.log(airhacks.content)
