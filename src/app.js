@@ -1,23 +1,9 @@
-console.log("Hello, airhacks")
 
-class AirHacks {
+const airhacks = (a, b, c) => { return "cached content " + a + b + c}
+const nice = 'muli'
 
-    constructor(name) {
-        this.message = `ask questions, ${name}!`
-    }
+const message = airhacks`
+<h1>${nice}</h1>
+`
 
-    getMessage() {
-        return this.message
-    }
-
-    get content() {
-        return "-> " + this.message
-    }
-
-    static create() {
-        return "string created!"
-    }
-}
-
-const airhacks = new AirHacks('test')
-console.log(airhacks.content)
+console.log(message)
