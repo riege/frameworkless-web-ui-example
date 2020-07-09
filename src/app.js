@@ -1,3 +1,4 @@
+import {html, render} from 'https://unpkg.com/lit-html?module';
 import { getMessageFromServer } from "./blogservice.js";
 import Post from "./Post.js"
 
@@ -11,12 +12,11 @@ class BlogView extends HTMLElement {
 
     connectedCallback() {
         console.log('initializing ...');
-        this.innerHTML = `my blog ${this.getAttribute('title')}
+        const template = html`my blog ${this.getAttribute('title')}
         <blog-post></blog-post>
         <pre>${getMessageFromServer()}</pre>
         ${this.innerHTML}`
-        const button = this.querySelector('button')
-        button.onclick = _ => this.appendChild(new Post())
+        render(template, this)
     }
 }
 

@@ -1,3 +1,5 @@
+import {html, render} from 'https://unpkg.com/lit-html?module';
+
 export default class Post extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
