@@ -1,3 +1,24 @@
+main{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-areas:
+    "header header"
+    "links posts"
+    "footer footer";
+}
+
+@media screen and (max-width: 60em){
+    main{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+        "header"
+        "posts"
+        "links"
+        "footer";
+    }
+}
+
 header{
     background: lightcoral;
     grid-area: header;
@@ -13,16 +34,6 @@ nav{
 section{
     grid-area: posts;
     background-color: lightyellow;
-}
-main{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    grid-template-areas: 
-    "header header"
-    "links posts"
-    "footer footer";
-}
-blog-view{
 }
 blog-post{
     background-color: yellow;
