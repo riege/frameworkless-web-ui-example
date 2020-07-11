@@ -1,6 +1,6 @@
 import store from '../store.js'
 import {ReactiveElement} from '../elements.js'
-import {html} from '../../deps/node_modules/lit-html/lit-html.js'
+import {html} from 'https://unpkg.com/lit-html?module'
 
 class CounterView extends ReactiveElement {
 

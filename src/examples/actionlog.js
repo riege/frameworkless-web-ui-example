@@ -1,23 +1,6 @@
 import store from '../store.js'
 import {ReactiveElement, StaticElement} from '../elements.js'
-import {html} from '../../deps/node_modules/lit-html/lit-html.js'
-
-class ActionLogView extends ReactiveElement {
-
-    static i = 0
-
-    render() {
-        ActionLogView.i++
-        const template = html`<action-log-item .item="${ActionLogView.i}"></action-log-item>`
-        return html`
-            <ol>
-                ${template}
-                ${ActionLogView.i >= 2 ? template : ''}
-                ${this.state.actionLog.map(action => html`<action-log-item item="${action}" .item="${action}"></action-log-item>`)}
-            </ol>
-        `
-    }
-}
+import {html} from 'https://unpkg.com/lit-html?module'
 
 class ActionLogItem extends StaticElement {
     set item(value) {
@@ -31,6 +14,16 @@ class ActionLogItem extends StaticElement {
         return html`<li><pre>${this._item}</pre></li>`
     }
 }
-
-customElements.define('action-log-view', ActionLogView)
 customElements.define('action-log-item', ActionLogItem)
+
+class ActionLogView extends ReactiveElement {
+
+    render() {
+        return html`
+            <ol>
+                ${this.state.actionLog.map(action => html`<action-log-item item="${action}" .item="${action}"></action-log-item>`)}
+            </ol>
+        `
+    }
+}
+customElements.define('action-log-view', ActionLogView)
