@@ -26,3 +26,6 @@ blog-post{
 h1, h2{
     text-align: center;
 }
+counter-view input {
+    width: 50px;
+}
