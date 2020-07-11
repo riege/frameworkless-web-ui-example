@@ -5,12 +5,9 @@ const initialState = {
     logLimit: 10,
 }
 
-function reducer(state = initialState, action) {
+function reducer(state, action) {
     state.actionLog = updateActionLog(state, action)
     state.actionCount++
-    if (action.type.startsWith('@@redux/INIT')) {
-        return initialState
-    }
     switch (action.type) {
         case 'COUNTER_INCREASE':
             return {...state, counter: state.counter + 1}
@@ -19,7 +16,7 @@ function reducer(state = initialState, action) {
         case 'COUNTER_SET':
             return {...state, counter: action.value}
         default:
-            console.log(`Ignoring action of unkown type ${action.type}`)
+            console.log(`Ignoring action of unknown type: ${action}`)
             return state
     }
 }
@@ -28,7 +25,25 @@ function updateActionLog(state, action) {
     return [JSON.stringify(action), ...state.actionLog.slice(0, state.logLimit-1)]
 }
 
-const store = Redux.createStore(reducer)
+const store = {
+    state: initialState,
+    listeners: [],
+    getState() {
+        return this.state
+    },
+    dispatch(action) {
+        this.state = reducer(this.state, action)
+        this.listeners.forEach(f => f())
+    },
+    subscribe(listener) {
+        this.listeners.push(listener)
+        return this.unsubscribe.bind(this, listener)
+    },
+    unsubscribe(toRemove) {
+        this.listeners = this.listeners.filter(l => l != toRemove)
+    },
+}
+
 console.log('Store initialized to ', store.getState())
 store.subscribe(_ => console.log('Store changed to ', store.getState()))
 // console.log(`Initial state: ${store.getState()}`)
