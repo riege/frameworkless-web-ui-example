@@ -15,18 +15,6 @@ export class ExampleView extends HTMLElement {
     }
 }
 
-export class StaticElement extends HTMLElement {
-
-    connectedCallback() {
-        render(this.render(), this)
-    }
-
-    render() {
-        return html`Please implement ${this.constructor.name}.render()`
-    }
-
-}
-
 export class ReactiveElement extends HTMLElement {
 
     connectedCallback() {
