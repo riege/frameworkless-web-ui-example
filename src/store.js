@@ -1,23 +1,31 @@
-const initialState = {
+import produce from './immer.js'
+
+const initialState = Object.freeze({
     counter: 0,
-    actionLog: [],
+    actionLog: Object.freeze([]),
     actionCount: 0,
     logLimit: 10,
-}
+})
 
 function reducer(state, action) {
+    return immer.produce(state, s => process(s, action))
+}
+
+function process(state, action) {
     state.actionLog = updateActionLog(state, action)
     state.actionCount++
     switch (action.type) {
         case 'COUNTER_INCREASE':
-            return {...state, counter: state.counter + 1}
+            state.counter++
+            break
         case 'COUNTER_DECREASE':
-            return {...state, counter: state.counter - 1}
+            state.counter--
+            break
         case 'COUNTER_SET':
-            return {...state, counter: action.value}
+            state.counter = action.value
+            break
         default:
-            console.log(`Ignoring action of unknown type: ${action}`)
-            return state
+            console.log(`Ignoring action of unknown type: ${JSON.stringify(action)}`)
     }
 }
 
@@ -46,8 +54,7 @@ const store = {
 
 console.log('Store initialized to ', store.getState())
 store.subscribe(_ => console.log('Store changed to ', store.getState()))
-// console.log(`Initial state: ${store.getState()}`)
-// console.log(`Initial state: ${initialState}`)
+
 export default {
     getState() {
         return store.getState()
