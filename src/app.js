@@ -1,4 +1,5 @@
 import {html, render} from 'https://unpkg.com/lit-html?module';
+import "./elements.js"
 
 const hello = function(state = {name: "world"}, message) {
     const { type, payload } = message

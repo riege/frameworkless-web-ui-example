@@ -1,0 +1,28 @@
+* {
+    --airhacks-orange: orange;
+}
+main{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+header{
+    background: var(--airhacks-orange, lightcoral);
+    grid-column: 1 / -1;
+}
+footer{
+    background: var(--airhacks-orange, lightcoral);
+    grid-column: 1 / -1;
+}
+nav{
+    background:lightblue;
+}
+example-view{
+    background-color: lightyellow;
+}
+blog-post{
+    background-color: yellow;
+}
+h1, h2{
+    text-align: center;
+}

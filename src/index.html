@@ -5,14 +5,17 @@
 </head>
 <body>
     <main>
-        <header><h1>My Blog</h1></header>
-        <section>
-            <h2>Posts</h2>
-            <blog-view></blog-view>
-        </section>
-        <nav><h2>links</h2></nav>
+        <header><h1>Redux Examples</h1></header>
+        <nav><h2>Nav</h2></nav>
+        <example-view title="Counter">
+            <counter-view></counter-view>
+        </example-view>
+        <example-view title="Message Log">
+            <message-log></message-log>
+        </example-view>
         <footer><h2>copyright</h2></footer>
     </main>
+    <nav></nav>
     <script src="https://unpkg.com/redux/dist/redux.js"></script>
     <script src="app.js" type="module"></script>
 </body>
