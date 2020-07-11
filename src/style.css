@@ -1,34 +1,50 @@
 * {
     --airhacks-orange: orange;
 }
-main{
+
+main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-header{
+header {
     background: var(--airhacks-orange, lightcoral);
     grid-column: 1 / -1;
 }
-footer{
+
+footer {
     background: var(--airhacks-orange, lightcoral);
     grid-column: 1 / -1;
+    padding: 1em;
+    text-align: center;
 }
-nav{
-    background:lightblue;
+
+footer a {
+    color: rgb(0, 92, 230);
 }
-example-view{
+
+nav {
+    background: lightblue;
+}
+
+example-view {
     background-color: lightyellow;
+    padding: 0 1em 1em 1em;
 }
-blog-post{
+
+blog-post {
     background-color: yellow;
 }
-h1, h2{
+
+h1,
+h2 {
     text-align: center;
 }
-counter-view{
+
+counter-view {
     text-align: center;
 }
+
 counter-view input {
     width: 50px;
 }
