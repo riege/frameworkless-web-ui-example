@@ -1,10 +1,13 @@
 const initialState = {
     counter: 0,
     actionLog: [],
+    actionCount: 0,
+    logLimit: 10,
 }
 
 function reducer(state = initialState, action) {
-    state.actionLog.push(JSON.stringify(action))
+    state.actionLog = updateActionLog(state, action)
+    state.actionCount++
     if (action.type.startsWith('@@redux/INIT')) {
         return initialState
     }
@@ -19,6 +22,10 @@ function reducer(state = initialState, action) {
             console.log(`Ignoring action of unkown type ${action.type}`)
             return state
     }
+}
+
+function updateActionLog(state, action) {
+    return [JSON.stringify(action), ...state.actionLog.slice(0, state.logLimit-1)]
 }
 
 const store = Redux.createStore(reducer)

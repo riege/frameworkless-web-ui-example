@@ -20,7 +20,7 @@ class ActionLogView extends ReactiveElement {
 
     render() {
         return html`
-            <ol>
+            <ol reversed start="${this.state.actionCount}">
                 ${this.state.actionLog.map(action => html`<action-log-item item="${action}" .item="${action}"></action-log-item>`)}
             </ol>
         `
