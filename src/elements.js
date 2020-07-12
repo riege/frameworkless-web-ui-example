@@ -1,11 +1,11 @@
-import {html, render} from 'https://unpkg.com/lit-html?module'
+import { html, render } from 'https://unpkg.com/lit-html?module'
 import store from '../store.js'
 
 export class ExampleView extends HTMLElement {
 
     connectedCallback() {
         const title = this.getAttribute('title')
-        const template = html`
+        const template = html `
             <section>
                 <h2>${title}</h2>
                 <div .innerHTML="${this.innerHTML}"></div>
@@ -22,15 +22,25 @@ export class ReactiveElement extends HTMLElement {
         store.subscribe(_ => this._update())
     }
 
+    extractState(state) {
+        const model = this.getAttribute('model')
+        if (!model) {
+            return
+        }
+        return model
+            .split('.')
+            .reduce((state, prop) => state[prop], state)
+    }
+
     _update() {
         console.log('Update called')
-        this.state = store.getState()
+        this.state = this.extractState(store.getState())
         const template = this.render()
         render(template, this)
     }
 
     render() {
-        return html`Please implement ${this.constructor.name}.render()`
+        return html `Please implement ${this.constructor.name}.render()`
     }
 
 }

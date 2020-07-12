@@ -1,40 +1,25 @@
 import produce from './immer.js'
+import counterModel from './examples/counterModel.js'
+import actionlogModel from './examples/actionlogModel.js'
 
-const initialState = Object.freeze({
-    counter: 0,
-    actionLog: Object.freeze([]),
-    actionCount: 0,
-    logLimit: 10,
-})
+function initialState() {
+    return Object.freeze({
+        actionLog: Object.freeze(actionlogModel.initialState()),
+        counter: Object.freeze(counterModel.initialState()),
+    })
+}
 
 function reducer(state, action) {
     return immer.produce(state, s => process(s, action))
 }
 
 function process(state, action) {
-    state.actionLog = updateActionLog(state, action)
-    state.actionCount++
-    switch (action.type) {
-        case 'COUNTER_INCREASE':
-            state.counter++
-            break
-        case 'COUNTER_DECREASE':
-            state.counter--
-            break
-        case 'COUNTER_SET':
-            state.counter = action.value
-            break
-        default:
-            console.log(`Ignoring action of unknown type: ${JSON.stringify(action)}`)
-    }
-}
-
-function updateActionLog(state, action) {
-    return [JSON.stringify(action), ...state.actionLog.slice(0, state.logLimit-1)]
+    actionlogModel.process(state.actionLog, action)
+    counterModel.process(state.counter, action)
 }
 
 const store = {
-    state: initialState,
+    state: initialState(),
     listeners: [],
     getState() {
         return this.state
@@ -52,22 +37,19 @@ const store = {
     },
 }
 
-console.log('Store initialized to ', store.getState())
-store.subscribe(_ => console.log('Store changed to ', store.getState()))
-
 export default {
     getState() {
         return store.getState()
     },
     incrementCounter() {
-        return store.dispatch({type: 'COUNTER_INCREASE'})
+        return store.dispatch({ type: 'COUNTER_INCREASE' })
     },
     decrementCounter() {
-        return store.dispatch({type: 'COUNTER_DECREASE'})
+        return store.dispatch({ type: 'COUNTER_DECREASE' })
     },
     setCounter(event) {
         const value = parseInt(event.target.value)
-        return store.dispatch({type: 'COUNTER_SET', value})
+        return store.dispatch({ type: 'COUNTER_SET', value })
     },
     subscribe(listener) {
         store.subscribe(listener)
