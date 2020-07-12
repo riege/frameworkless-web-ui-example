@@ -41,17 +41,10 @@ export default {
     getState() {
         return store.getState()
     },
-    incrementCounter() {
-        return store.dispatch({ type: 'COUNTER_INCREASE' })
-    },
-    decrementCounter() {
-        return store.dispatch({ type: 'COUNTER_DECREASE' })
-    },
-    setCounter(event) {
-        const value = parseInt(event.target.value)
-        return store.dispatch({ type: 'COUNTER_SET', value })
+    dispatch(type, payload) {
+        store.dispatch({ type, payload })
     },
     subscribe(listener) {
-        store.subscribe(listener)
+        return store.subscribe(listener)
     },
 }
