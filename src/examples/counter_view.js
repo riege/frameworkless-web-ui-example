@@ -1,5 +1,5 @@
-import store from '../store.js'
-import { ReactiveElement } from '../elements.js'
+import store from '../base/store.js'
+import { ReactiveElement } from '../base/elements.js'
 import { html } from 'https://unpkg.com/lit-html?module'
 import { INCREASE, DECREASE, SET } from './counter_model.js'
 
