@@ -1,7 +1,7 @@
 import store from '../store.js'
 import { ReactiveElement } from '../elements.js'
 import { html } from 'https://unpkg.com/lit-html?module'
-import { INCREASE, DECREASE, SET } from './counterModel.js'
+import { INCREASE, DECREASE, SET } from './counter_model.js'
 
 const increase = _e => store.dispatch(INCREASE)
 const decrease = _e => store.dispatch(DECREASE)

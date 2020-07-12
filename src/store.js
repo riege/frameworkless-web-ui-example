@@ -1,6 +1,6 @@
 import produce from './immer.js'
-import counterModel from './examples/counterModel.js'
-import actionlogModel from './examples/actionlogModel.js'
+import counterModel from './examples/counter_model.js'
+import actionlogModel from './examples/actionlog_model.js'
 
 function initialState() {
     return Object.freeze({

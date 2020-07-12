@@ -1,7 +1,7 @@
 import store from '../store.js'
 import { ReactiveElement } from '../elements.js'
 import { html } from 'https://unpkg.com/lit-html?module'
-import { SET_LIMIT } from './actionlogModel.js'
+import { SET_LIMIT } from './actionlog_model.js'
 
 const setLimit = e => store.dispatch(SET_LIMIT, e.target.value)
 
