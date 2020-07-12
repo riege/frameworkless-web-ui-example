@@ -22,19 +22,9 @@ export class ReactiveElement extends HTMLElement {
         store.subscribe(_ => this._update())
     }
 
-    extractState(state) {
-        const model = this.getAttribute('model')
-        if (!model) {
-            return
-        }
-        return model
-            .split('.')
-            .reduce((state, prop) => state[prop], state)
-    }
-
     _update() {
         console.log('Update called')
-        this.state = this.extractState(store.getState())
+        this.state = store.getState()
         const template = this.render()
         render(template, this)
     }
