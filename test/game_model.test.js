@@ -24,15 +24,17 @@ describe('gameModel', function() {
                 hp: 100,
                 mana: 3,
                 block: 0,
-                hand: [],
-                draw: [],
-                discard: [],
             },
             enemy: {
                 hp: 100,
                 block: 0,
                 willAttack: 0,
                 willBlock: 0,
+            },
+            cards: {
+                hand: [],
+                draw: gameModel.deck(),
+                discard: [],
             },
         })
     })
@@ -76,24 +78,26 @@ describe('gameModel', function() {
         it('should take 6 damage when playing an attack', () => {
             this.performAction(gm.START_GAME)
             expect(this.state.enemy.hp).to.equal(100)
+            this.state.cards.hand = [cards.ATTACK, cards.BLOCK, cards.ATTACK]
 
-            this.performAction(gm.PLAY_CARD, cards.ATTACK)
+            this.performAction(gm.PLAY_CARD, 2)
             expect(this.state.enemy.hp).to.equal(94)
 
-            this.performAction(gm.PLAY_CARD, cards.BLOCK)
-            this.performAction(gm.PLAY_CARD, cards.ATTACK)
+            this.performAction(gm.PLAY_CARD, 1)
+            this.performAction(gm.PLAY_CARD, 0)
             expect(this.state.enemy.hp).to.equal(88)
         })
 
         it('should loose block before health', () => {
             this.performAction(gm.START_GAME)
             this.state.enemy.block = 10
+            this.state.cards.hand = [cards.ATTACK, cards.ATTACK]
 
-            this.performAction(gm.PLAY_CARD, cards.ATTACK)
+            this.performAction(gm.PLAY_CARD, 0)
             expect(this.state.enemy.hp).to.equal(100)
             expect(this.state.enemy.block).to.equal(4)
 
-            this.performAction(gm.PLAY_CARD, cards.ATTACK)
+            this.performAction(gm.PLAY_CARD, 0)
             expect(this.state.enemy.hp).to.equal(98)
             expect(this.state.enemy.block).to.equal(0)
         })
@@ -133,15 +137,13 @@ describe('gameModel', function() {
             this.performAction(gm.START_GAME)
             expect(this.state.player.block).to.equal(0)
 
-            this.performAction(gm.PLAY_CARD, cards.BLOCK)
+            this.state.cards.hand = [cards.BLOCK, cards.ATTACK, cards.BLOCK]
+            this.performAction(gm.PLAY_CARD, 2)
             expect(this.state.player.block).to.equal(6)
 
-            this.performAction(gm.PLAY_CARD, cards.BLOCK)
+            this.performAction(gm.PLAY_CARD, 1)
+            this.performAction(gm.PLAY_CARD, 0)
             expect(this.state.player.block).to.equal(12)
-
-            this.performAction(gm.PLAY_CARD, cards.ATTACK)
-            this.performAction(gm.PLAY_CARD, cards.BLOCK)
-            expect(this.state.player.block).to.equal(18)
         })
     })
 
@@ -153,6 +155,83 @@ describe('gameModel', function() {
             this.state.enemy.willAttack = 10
             this.performAction(gm.END_TURN)
             expect(this.state.state).to.equal(gm.STATE_GAME_OVER)
+        })
+
+        it('should play cards from the hand and discard them', () => {
+            this.performAction(gm.START_GAME)
+            expect(this.state.player.mana).to.equal(3)
+
+            this.state.cards.hand = [cards.BLOCK, cards.ATTACK, cards.BLOCK, cards.ATTACK]
+            this.performAction(gm.PLAY_CARD, 3)
+            expect(this.state.cards.hand).to.deep.equal([cards.BLOCK, cards.ATTACK, cards.BLOCK])
+            expect(this.state.cards.discard).to.deep.equal([cards.ATTACK])
+            expect(this.state.player.mana).to.equal(2)
+
+            this.performAction(gm.PLAY_CARD, 0)
+            expect(this.state.cards.hand).to.deep.equal([cards.ATTACK, cards.BLOCK])
+            expect(this.state.cards.discard).to.deep.equal([cards.ATTACK, cards.BLOCK])
+            expect(this.state.player.mana).to.equal(1)
+        })
+
+        it('should not play a card when the player is out of mana', () => {
+            this.performAction(gm.START_GAME)
+            this.state.player.mana = 0
+
+            this.state.cards.hand = [cards.BLOCK]
+            this.performAction(gm.PLAY_CARD, 0)
+            expect(this.state.cards.hand).to.deep.equal([cards.BLOCK])
+            expect(this.state.cards.discard).to.deep.equal([])
+            expect(this.state.player.mana).to.equal(0)
+            expect(this.state.player.block).to.equal(0)
+        })
+
+        it('should draw 5 cards from the draw pile when starting a turn', () => {
+            this.performAction(gm.START_GAME)
+            const fiveAttacks = () => Array(5).fill(cards.ATTACK)
+            const fiveBlocks = () => Array(5).fill(cards.BLOCK)
+            this.state.cards.hand = fiveBlocks()
+            this.state.cards.draw = fiveAttacks().concat(fiveAttacks())
+
+            this.performAction(gm.END_TURN)
+            expect(this.state.cards.discard).to.deep.equal(fiveBlocks())
+            expect(this.state.cards.draw).to.deep.equal(fiveAttacks())
+            expect(this.state.cards.hand).to.deep.equal(fiveAttacks())
+        })
+
+        it('should shuffle the discard pile into the draw pile when the draw pile is empty', () => {
+            this.performAction(gm.START_GAME)
+            const threeAttacks = () => Array(3).fill(cards.ATTACK)
+            const threeBlocks = () => Array(3).fill(cards.BLOCK)
+            const twoDefends = () => Array(2).fill(cards.DEFEND)
+            this.state.cards.hand = threeAttacks().concat(twoDefends())
+            this.state.cards.draw = threeBlocks()
+            const permutations = new Set()
+
+            for (let i = 0; i < 100; i++) {
+                this.performAction(gm.END_TURN)
+                expect(this.state.cards.discard).to.deep.equal([])
+                expect(this.state.cards.hand.length).to.equal(5)
+                expect(this.state.cards.draw.length).to.equal(3)
+                const permutation = this.state.cards.hand
+                    .concat(this.state.cards.draw)
+                    .map(c => c.name)
+                    .join()
+                permutations.add(permutation)
+            }
+            expect(permutations.size).to.be.above(25)
+        })
+
+        it('should have a deck with 13 cards', () => {
+            this.performAction(gm.START_GAME)
+            const deck = this.state.cards.draw.concat(this.state.cards.hand)
+            const count = (card) => deck.filter(c => c == card).length
+
+            expect(this.state.cards.hand.length).to.equal(5)
+            expect(this.state.cards.draw.length).to.equal(8)
+            expect(deck.length).to.equal(13)
+            expect(count(cards.ATTACK)).to.equal(5)
+            expect(count(cards.BLOCK)).to.equal(5)
+            expect(count(cards.DEFEND)).to.equal(3)
         })
     })
 })

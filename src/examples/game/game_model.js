@@ -16,7 +16,24 @@ function generateAction() {
     return { name, value }
 }
 
+function shuffle(array) {
+    for (let i = array.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        const temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+    }
+}
+
 const gameModel = {
+
+    deck() {
+        const result = Array(13)
+        result.fill(cards.ATTACK, 0, 5)
+        result.fill(cards.BLOCK, 5, 10)
+        result.fill(cards.DEFEND, 10, 13)
+        return result
+    },
 
     initialState() {
         return {
@@ -26,9 +43,6 @@ const gameModel = {
                 hp: 100,
                 mana: 3,
                 block: 0,
-                hand: [],
-                draw: [],
-                discard: [],
             },
             enemy: {
                 hp: 100,
@@ -36,6 +50,11 @@ const gameModel = {
                 willAttack: 0,
                 willBlock: 0,
             },
+            cards: {
+                hand: [],
+                draw: this.deck(),
+                discard: [],
+            }
         }
     },
 
@@ -49,19 +68,40 @@ const gameModel = {
         if (action.type === START_GAME) {
             Object.assign(state, this.initialState())
             state.state = STATE_GAME
-            this.generateEnemyAction(state.enemy)
+            this.startTurn(state)
         }
         if (action.type === END_TURN) {
             this.takeDamage(state.player, state.enemy.willAttack)
-            this.generateEnemyAction(state.enemy)
-            if (state.player.hp <= 0) {
-                state.state = STATE_GAME_OVER
-            }
+            this.startTurn(state)
         }
         if (action.type === PLAY_CARD) {
-            const card = action.payload
-            this.takeDamage(state.enemy, card.damage ? card.damage : 0)
-            state.player.block += card.block ? card.block : 0
+            if (state.player.mana > 0) {
+                const cardIndex = action.payload
+                const card = state.cards.hand[cardIndex]
+                state.cards.hand = state.cards.hand.filter((_, i) => i != cardIndex)
+                state.cards.discard.push(card)
+                this.takeDamage(state.enemy, card.damage ? card.damage : 0)
+                state.player.block += card.block ? card.block : 0
+                state.player.mana -= 1
+            }
+        }
+    },
+
+    startTurn(state) {
+        this.generateEnemyAction(state.enemy)
+        if (state.player.hp <= 0) {
+            state.state = STATE_GAME_OVER
+        }
+        while (state.cards.hand.length > 0) {
+            state.cards.discard.push(state.cards.hand.pop())
+        }
+        for (let i = 0; i < 5; i++) {
+            if (state.cards.draw.length <= 0) {
+                state.cards.draw = state.cards.discard
+                shuffle(state.cards.draw)
+                state.cards.discard = []
+            }
+            state.cards.hand.push(state.cards.draw.pop())
         }
     },
 
