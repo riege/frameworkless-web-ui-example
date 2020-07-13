@@ -1,4 +1,4 @@
-import produce from '../immer.js'
+import produce from '../deps/immer.js'
 import counterModel from '../examples/counter_model.js'
 import actionlogModel from '../examples/actionlog_model.js'
 

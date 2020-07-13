@@ -1,4 +1,4 @@
-import { html, render } from 'https://unpkg.com/lit-html?module'
+import { html, render } from '../deps/lit-html.js'
 import store from './store.js'
 
 export class ExampleView extends HTMLElement {
