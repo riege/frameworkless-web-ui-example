@@ -1,7 +1,7 @@
 const mocha = window.mocha
-const describe = window.describe
+const expect = window.chai.expect
 
 mocha.setup('bdd');
 mocha.checkLeaks();
 
-export { describe, mocha }
+export { expect, mocha }
