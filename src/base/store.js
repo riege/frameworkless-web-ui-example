@@ -1,11 +1,13 @@
 import produce from '../deps/immer.js'
 import counterModel from '../examples/counter_model.js'
 import actionlogModel from '../examples/actionlog_model.js'
+import gameModel from '../examples/game/game_model.js'
 
 function initialState() {
     return Object.freeze({
         actionLog: Object.freeze(actionlogModel.initialState()),
         counter: Object.freeze(counterModel.initialState()),
+        game: Object.freeze(gameModel.initialState())
     })
 }
 
@@ -16,6 +18,7 @@ function reducer(state, action) {
 function process(state, action) {
     actionlogModel.process(state.actionLog, action)
     counterModel.process(state.counter, action)
+    gameModel.process(state.game, action)
 }
 
 const store = {

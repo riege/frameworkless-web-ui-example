@@ -30,9 +30,9 @@ describe('gameModel', function() {
             },
             enemy: {
                 hp: 100,
-                block: null,
-                willAttack: null,
-                willBlock: null,
+                block: 0,
+                willAttack: 0,
+                willBlock: 0,
             },
         })
     })

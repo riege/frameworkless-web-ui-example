@@ -5,6 +5,8 @@
 main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+    background: #e9dad1;
 }
 
 header {
@@ -32,6 +34,10 @@ example-view {
     padding: 0 1em 1em 1em;
 }
 
+example-view.game {
+    grid-column: 1 / -1;
+}
+
 blog-post {
     background-color: yellow;
 }
@@ -47,4 +53,62 @@ counter-view {
 
 counter-view input {
     width: 50px;
+}
+
+game-view {
+    display: grid;
+    grid-template-columns: 4fr 1fr 16fr 1fr 4fr;
+    grid-template-areas: "player space1 arena space2 enemy" "player space1 cards space2 enemy" "player-stats space1 cards space2 enemy-stats";
+}
+
+.player-model {
+    width: 12vw;
+    height: 24vw;
+    grid-area: player;
+    margin: auto;
+    background-color: white;
+    border: 10px solid black;
+    border-radius: 15px;
+}
+
+.character-stats {
+    margin: auto;
+}
+
+.player-stats {
+    grid-area: player-stats;
+}
+
+.enemy-model {
+    width: 12vw;
+    height: 24vw;
+    grid-area: enemy;
+    margin: auto;
+    background-color: white;
+    border: 10px solid black;
+    border-radius: 15px;
+}
+
+.enemy-stats {
+    grid-area: enemy-stats;
+}
+
+.player-hand {
+    grid-area: cards;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.card {
+    width: 10vw;
+    height: 20vw;
+    margin: auto;
+    background-color: white;
+    border: 10px solid blue;
+    border-radius: 15px;
+}
+
+.card:hover {
+    position: relative;
+    bottom: 2vw;
 }
