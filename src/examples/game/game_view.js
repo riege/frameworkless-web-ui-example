@@ -1,7 +1,7 @@
 import { ReactiveElement } from '../../base/elements.js'
 import { html } from '../../deps/lit-html.js'
 import store from '../../base/store.js'
-import gameModel from './game_model.js'
+import gameModel, { STATE_VICTORY } from './game_model.js'
 import { START_GAME, PLAY_CARD, END_TURN, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
 
 function characterStats(char) {
@@ -81,7 +81,9 @@ function arenaContent(game) {
         case STATE_GAME:
             return html `<button @click="${() => store.dispatch(END_TURN)}">End turn</button>`
         case STATE_GAME_OVER:
-            return html `<p>Game over</p><button @click="${() => store.dispatch(START_GAME)}">Start new game</button>`
+            return html `<p>Defeat!</p><button @click="${() => store.dispatch(START_GAME)}">Start new game</button>`
+        case STATE_VICTORY:
+            return html `<p>Victory!</p><button @click="${() => store.dispatch(START_GAME)}">Start new game</button>`
     }
 }
 

@@ -67,7 +67,7 @@ describe('gameModel', function() {
                 const attack = this.state.enemy.willAttack
                 const block = this.state.enemy.willBlock
                 expect(attack || block).to.not.be.null
-                expect(attack + block).to.be.below(30)
+                expect(attack + block).to.be.below(40)
                 const actionString = `a${attack}b${block}`
                 distinctActions.add(actionString)
                 this.performAction(gm.END_TURN)
@@ -272,6 +272,23 @@ describe('gameModel', function() {
             expect(count(cards.ATTACK)).to.equal(5)
             expect(count(cards.BLOCK)).to.equal(5)
             expect(count(cards.DEFEND)).to.equal(3)
+        })
+
+        it('should require deliberation from the player', () => {
+            let player_wins = 0
+            for (let i = 0; i < 100; i++) {
+                this.performAction(gm.START_GAME)
+                for (let j = 0; j < 10000 && this.state.state == gm.STATE_GAME; j++) {
+                    this.performAction(gm.PLAY_CARD, 0)
+                    this.performAction(gm.PLAY_CARD, 0)
+                    this.performAction(gm.PLAY_CARD, 0)
+                    this.performAction(gm.END_TURN)
+                }
+                if (this.state.state == gm.STATE_VICTORY) {
+                    player_wins += 1
+                }
+            }
+            expect(player_wins).to.be.below(10)
         })
     })
 })

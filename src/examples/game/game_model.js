@@ -11,9 +11,11 @@ const END_TURN = 'GAME_END_TURN'
 
 function generateAction() {
     const names = ['willBlock', 'willAttack']
-    const nameIndex = Math.floor(Math.random() * names.length)
-    const name = names[nameIndex]
-    const value = Math.floor(Math.random() * 8) + 4
+    const factors = [1.5, 1.9]
+    const i = Math.floor(Math.random() * names.length)
+    const name = names[i]
+    const factor = factors[i]
+    const value = Math.floor((Math.random() * 4 + 5) * factor)
     return { name, value }
 }
 
