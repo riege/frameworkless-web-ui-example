@@ -58,7 +58,7 @@ counter-view input {
 game-view {
     display: grid;
     grid-template-columns: 4fr 1fr 16fr 1fr 4fr;
-    grid-template-areas: "player space1 arena space2 enemy" "player space1 cards space2 enemy" "player-stats space1 cards space2 enemy-stats";
+    grid-template-areas: "player space1 arena space2 enemy" "player space1 cards space2 enemy"
 }
 
 .arena {
@@ -84,16 +84,16 @@ game-view {
     margin: auto;
 }
 
-.player-stats {
-    grid-area: player-stats;
-}
-
 .enemy-model {
     grid-area: enemy;
 }
 
-.enemy-stats {
-    grid-area: enemy-stats;
+.enemy-intent-Attack {
+    color: red;
+}
+
+.enemy-intent-Block {
+    color: blue;
 }
 
 .player-hand {
@@ -107,8 +107,20 @@ game-view {
     height: 20vw;
     margin: auto;
     background-color: white;
-    border: 10px solid blue;
+    border: 10px solid white;
     border-radius: 15px;
+}
+
+.card-Block {
+    border-color: blue;
+}
+
+.card-Defend {
+    border-color: violet;
+}
+
+.card-Attack {
+    border-color: red;
 }
 
 .card:hover {

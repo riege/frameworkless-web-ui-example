@@ -19,9 +19,9 @@ function player(player) {
     return html `
         <div class="character-model player-model">
             <h1>Player</h1>
-        </div>
-        <div class="player-stats">
-            ${characterStats(player)}
+            <div class="player-stats">
+                ${characterStats(player)}
+            </div>
         </div>
         `
 }
@@ -36,9 +36,9 @@ function enemy(enemy) {
             ${enemyIntent('Block', enemy.willBlock)}
             ${enemyIntent('do nothing', !(enemy.willBlock || enemy.willAttack))}
             </div>
-        </div>
-        <div class="enemy-stats">
-            ${characterStats(enemy)}
+            <div class="enemy-stats">
+                ${characterStats(enemy)}
+            </div>
         </div>
         `
 }
@@ -47,7 +47,7 @@ function enemyIntent(action, value) {
     if (!value) {
         return null
     }
-    return html `<p>${action} ${typeof(value) === 'number' ? value : ''}</p>`
+    return html `<p class="enemy-intent-${action}">${action} ${typeof(value) === 'number' ? value : ''}</p>`
 }
 
 function cards(hand) {
@@ -61,7 +61,7 @@ function cards(hand) {
 function card(card, index) {
     const playCard = () => store.dispatch(PLAY_CARD, index)
     return html `
-        <div class="card" @click="${playCard}">
+        <div class="card card-${card.name}" @click="${playCard}">
             <h1>${card.name}</h1>
             <p>
                 ${card.description}
