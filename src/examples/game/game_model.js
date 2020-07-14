@@ -41,7 +41,7 @@ const gameModel = {
     initialState() {
         return {
             state: STATE_WELCOME,
-            round: 0,
+            turn: 0,
             player: {
                 hp: 100,
                 mana: 3,
@@ -89,6 +89,7 @@ const gameModel = {
     },
 
     startTurn(state) {
+        state.turn += 1
         this.generateEnemyAction(state.enemy)
         if (state.player.hp <= 0) {
             state.state = STATE_GAME_OVER

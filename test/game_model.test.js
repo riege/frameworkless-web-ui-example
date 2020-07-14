@@ -19,7 +19,7 @@ describe('gameModel', function() {
     it('should have an inital state', () => {
         expect(this.state).to.deep.equal({
             state: gm.STATE_WELCOME,
-            round: 0,
+            turn: 0,
             player: {
                 hp: 100,
                 mana: 3,
@@ -47,11 +47,11 @@ describe('gameModel', function() {
         })
 
         it('should reset game properties to the initial state', () => {
-            this.state.round = 10
+            this.state.turn = 10
             this.state.player.hp = -2
             this.state.enemy.hp = 10
             this.performAction(gm.START_GAME)
-            expect(this.state.round).to.equal(0)
+            expect(this.state.turn).to.equal(1)
             expect(this.state.player.hp).to.equal(100)
             expect(this.state.enemy.hp).to.equal(100)
         })
