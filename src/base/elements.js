@@ -23,7 +23,6 @@ export class ReactiveElement extends HTMLElement {
     }
 
     _update() {
-        console.log('Update called')
         this.state = store.getState()
         const template = this.render()
         render(template, this)

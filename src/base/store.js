@@ -12,7 +12,7 @@ function initialState() {
 }
 
 function reducer(state, action) {
-    return immer.produce(state, s => process(s, action))
+    return produce(state, s => process(s, action))
 }
 
 function process(state, action) {

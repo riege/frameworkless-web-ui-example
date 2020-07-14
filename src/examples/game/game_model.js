@@ -62,12 +62,6 @@ const gameModel = {
     },
 
     process(state, action) {
-        if (!action) {
-            console.error('process() called with undefind action')
-        }
-        if (!action.type) {
-            console.error('process() called with undefined action type')
-        }
         if (action.type === START_GAME) {
             Object.assign(state, this.initialState())
             state.state = STATE_GAME

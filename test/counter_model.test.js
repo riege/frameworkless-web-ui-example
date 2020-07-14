@@ -1,7 +1,6 @@
 import counterModel from '../src/examples/counter_model.js'
 import { INCREASE, DECREASE, SET } from '../src/examples/counter_model.js'
-
-const expect = chai.expect
+import {expect} from './mocha.js'
 
 describe('counter_model', function() {
 

@@ -1,0 +1,8 @@
+{
+    "esversion": 6,
+    "browser": true,
+    "module": true,
+    "asi": true,
+    "mocha": true,
+    "expr": true
+}
