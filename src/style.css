@@ -61,14 +61,23 @@ game-view {
     grid-template-areas: "player space1 arena space2 enemy" "player space1 cards space2 enemy" "player-stats space1 cards space2 enemy-stats";
 }
 
-.player-model {
+.arena {
+    grid-area: arena;
+    margin: auto;
+}
+
+.character-model {
     width: 12vw;
     height: 24vw;
-    grid-area: player;
     margin: auto;
     background-color: white;
     border: 10px solid black;
     border-radius: 15px;
+    text-align: center;
+}
+
+.player-model {
+    grid-area: player;
 }
 
 .character-stats {
@@ -80,13 +89,7 @@ game-view {
 }
 
 .enemy-model {
-    width: 12vw;
-    height: 24vw;
     grid-area: enemy;
-    margin: auto;
-    background-color: white;
-    border: 10px solid black;
-    border-radius: 15px;
 }
 
 .enemy-stats {
