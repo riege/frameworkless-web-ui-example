@@ -3,6 +3,7 @@ import cards from './cards.js'
 const STATE_WELCOME = 'GAME_STATE_WELCOME'
 const STATE_GAME = 'GAME_STATE_GAME'
 const STATE_GAME_OVER = 'GAME_STATE_GAME_OVER'
+const STATE_VICTORY = 'GAME_STATE_VICTORY'
 
 const START_GAME = 'GAME_START_GAME'
 const PLAY_CARD = 'GAME_PLAY_CARD'
@@ -54,7 +55,7 @@ const gameModel = {
                 hand: [],
                 draw: this.deck(),
                 discard: [],
-            }
+            },
         }
     },
 
@@ -84,6 +85,9 @@ const gameModel = {
                 this.takeDamage(state.enemy, card.damage ? card.damage : 0)
                 state.player.block += card.block ? card.block : 0
                 state.player.mana -= 1
+                if (state.enemy.hp <= 0) {
+                    state.state = STATE_VICTORY
+                }
             }
         }
     },
@@ -131,6 +135,7 @@ export {
     STATE_WELCOME,
     STATE_GAME,
     STATE_GAME_OVER,
+    STATE_VICTORY,
     START_GAME,
     PLAY_CARD,
     END_TURN,

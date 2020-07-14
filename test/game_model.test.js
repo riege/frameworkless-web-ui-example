@@ -67,7 +67,7 @@ describe('gameModel', function() {
                 const attack = this.state.enemy.willAttack
                 const block = this.state.enemy.willBlock
                 expect(attack || block).to.not.be.null
-                expect(attack + block).to.be.below(20)
+                expect(attack + block).to.be.below(30)
                 const actionString = `a${attack}b${block}`
                 distinctActions.add(actionString)
                 this.performAction(gm.END_TURN)
@@ -184,6 +184,17 @@ describe('gameModel', function() {
             this.state.enemy.willAttack = 10
             this.performAction(gm.END_TURN)
             expect(this.state.state).to.equal(gm.STATE_GAME_OVER)
+        })
+
+        it('should end when enemy dies', () => {
+            this.performAction(gm.START_GAME)
+            this.state.enemy.hp = 10
+            this.state.cards.hand = [cards.ATTACK, cards.ATTACK]
+            this.performAction(gm.PLAY_CARD, 0)
+            expect(this.state.state).to.equal(gm.STATE_GAME)
+
+            this.performAction(gm.PLAY_CARD, 0)
+            expect(this.state.state).to.equal(gm.STATE_VICTORY)
         })
 
         it('should play cards from the hand and discard them', () => {
