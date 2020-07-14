@@ -101,6 +101,23 @@ describe('gameModel', function() {
             expect(this.state.enemy.hp).to.equal(98)
             expect(this.state.enemy.block).to.equal(0)
         })
+
+        it('should receive block at the end of the turn', () => {
+            this.performAction(gm.START_GAME)
+            this.state.enemy.willBlock = 10
+
+            this.performAction(gm.END_TURN)
+            expect(this.state.enemy.block).to.equal(10)
+        })
+
+        it('should reset block at the end of the turn', () => {
+            this.performAction(gm.START_GAME)
+            this.state.enemy.willBlock = 0
+            this.state.enemy.block = 10
+
+            this.performAction(gm.END_TURN)
+            expect(this.state.enemy.block).to.equal(0)
+        })
     })
 
     describe('the player', () => {
@@ -125,8 +142,9 @@ describe('gameModel', function() {
             this.state.enemy.willAttack = 5
             this.performAction(gm.END_TURN)
             expect(this.state.player.hp).to.equal(100)
-            expect(this.state.player.block).to.equal(5)
+            expect(this.state.player.block).to.equal(0)
 
+            this.state.player.block = 5
             this.state.enemy.willAttack = 7
             this.performAction(gm.END_TURN)
             expect(this.state.player.hp).to.equal(98)
@@ -144,6 +162,17 @@ describe('gameModel', function() {
             this.performAction(gm.PLAY_CARD, 1)
             this.performAction(gm.PLAY_CARD, 0)
             expect(this.state.player.block).to.equal(12)
+        })
+
+        it('should receive 3 mana at the start of the turn', () => {
+            this.performAction(gm.START_GAME)
+            this.state.player.mana = 1
+
+            this.performAction(gm.END_TURN)
+            expect(this.state.player.mana).to.equal(3)
+
+            this.performAction(gm.END_TURN)
+            expect(this.state.player.mana).to.equal(3)
         })
     })
 

@@ -12,7 +12,7 @@ function generateAction() {
     const names = ['willBlock', 'willAttack']
     const nameIndex = Math.floor(Math.random() * names.length)
     const name = names[nameIndex]
-    const value = Math.floor(Math.random() * 7) + 3
+    const value = Math.floor(Math.random() * 8) + 4
     return { name, value }
 }
 
@@ -72,6 +72,7 @@ const gameModel = {
         }
         if (action.type === END_TURN) {
             this.takeDamage(state.player, state.enemy.willAttack)
+            state.enemy.block = state.enemy.willBlock
             this.startTurn(state)
         }
         if (action.type === PLAY_CARD) {
@@ -103,6 +104,8 @@ const gameModel = {
             }
             state.cards.hand.push(state.cards.draw.pop())
         }
+        state.player.mana = 3
+        state.player.block = 0
     },
 
     takeDamage(character, damage) {
