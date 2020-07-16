@@ -1,9 +1,14 @@
-const counterModel = {
+import BaseModel from "../base/model.js"
 
-    initialState() {
-        return { value: 0 }
-    },
+export default class CounterModel extends BaseModel {
+    constructor() {
+        super()
+        this.value = 0
+    }
 
+    static initialState() {
+        return new this()
+    }
 }
 
 export function increase(state) {
@@ -17,5 +22,3 @@ export function decrease(state) {
 export function set(state, value) {
     state.value = value
 }
-
-export default counterModel

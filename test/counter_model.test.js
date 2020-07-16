@@ -1,15 +1,20 @@
-import counterModel from '../src/examples/counter_model.js'
+import CounterModel from '../src/examples/counter_model.js'
+import BaseModel from '../src/base/model.js'
 import { increase, decrease, set } from '../src/examples/counter_model.js'
 import {expect} from './mocha.js'
 
 describe('counter_model', function() {
 
     beforeEach(() => {
-        this.state = counterModel.initialState()
+        this.state = new CounterModel()
         this.testAction = function(action, expectedValue, payload) {
             action(this.state, payload)
             expect(this.state).to.deep.equal({ value: expectedValue })
         }
+    })
+
+    it('should be a model', () => {
+        expect(this.state).to.be.an.instanceof(BaseModel)
     })
 
     it('should have 0 as initial state', () => {
