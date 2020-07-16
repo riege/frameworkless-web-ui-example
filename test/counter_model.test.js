@@ -1,13 +1,13 @@
 import counterModel from '../src/examples/counter_model.js'
-import { INCREASE, DECREASE, SET } from '../src/examples/counter_model.js'
+import { increase, decrease, set } from '../src/examples/counter_model.js'
 import {expect} from './mocha.js'
 
 describe('counter_model', function() {
 
     beforeEach(() => {
         this.state = counterModel.initialState()
-        this.testAction = function(action, expectedValue) {
-            counterModel.process(this.state, action)
+        this.testAction = function(action, expectedValue, payload) {
+            action(this.state, payload)
             expect(this.state).to.deep.equal({ value: expectedValue })
         }
     })
@@ -17,14 +17,14 @@ describe('counter_model', function() {
     })
 
     it('should add 1 on increment', () => {
-        const action = { type: INCREASE }
+        const action = increase
         this.testAction(action, 1)
         this.testAction(action, 2)
         this.testAction(action, 3)
     })
 
     it('should remove 1 on decrement', () => {
-        const action = { type: DECREASE }
+        const action = decrease
         this.testAction(action, -1)
         this.testAction(action, -2)
         this.testAction(action, -3)
@@ -33,8 +33,7 @@ describe('counter_model', function() {
     it('should set the value on set', () => {
         const values = [1, 42, -4, 0, 102]
         for (const value of values) {
-            const action = { type: SET, payload: value }
-            this.testAction(action, value)
+            this.testAction(set, value, value)
         }
     })
 })

@@ -1,21 +1,17 @@
 import store from '../base/store.js'
-import { ReactiveElement } from '../base/elements.js'
+import { ReactiveElement2 } from '../base/elements.js'
 import { html } from '../deps/lit-html.js'
-import { INCREASE, DECREASE, SET } from './counter_model.js'
+import { increase, decrease, set } from './counter_model.js'
 
-const increase = _e => store.dispatch(INCREASE)
-const decrease = _e => store.dispatch(DECREASE)
-const set = e => store.dispatch(SET, e.target.value)
-
-class CounterView extends ReactiveElement {
+class CounterView extends ReactiveElement2 {
 
     render() {
         this.style.display = 'block'
         return html `
-            <button @click="${increase}">+</button>
-            <input type="number" .value="${this.state.counter.value}"
-                                 @change="${set}">
-            <button @click="${decrease}">-</button>
+            <button @click="${this.eventHandler(increase)}">+</button>
+            <input type="number" .value="${this.state && this.state.value}"
+                                 @change="${this.eventHandler(set)}">
+            <button @click="${this.eventHandler(decrease)}">-</button>
         `
     }
 }
