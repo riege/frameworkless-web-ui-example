@@ -1,8 +1,8 @@
-import BaseModel from "../base/model.js"
+import {immerable} from '../deps/immer.js'
 
-export default class CounterModel extends BaseModel {
+export default class CounterModel {
     constructor() {
-        super()
+        this[immerable] = true
         this.value = 0
     }
 

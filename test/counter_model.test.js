@@ -1,5 +1,5 @@
 import CounterModel from '../src/examples/counter_model.js'
-import BaseModel from '../src/base/model.js'
+import {checkModelClass} from './base_model.test.js'
 import { increase, decrease, set } from '../src/examples/counter_model.js'
 import {expect} from './mocha.js'
 
@@ -13,9 +13,7 @@ describe('counter_model', function() {
         }
     })
 
-    it('should be a model', () => {
-        expect(this.state).to.be.an.instanceof(BaseModel)
-    })
+    checkModelClass(CounterModel)
 
     it('should have 0 as initial state', () => {
         expect(this.state).to.deep.equal({ value: 0 })
