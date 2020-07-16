@@ -43,6 +43,10 @@ export class ReactiveElement2 extends HTMLElement {
         subscribe(_ => this._update())
     }
 
+    subModel(path) {
+        return `${this.model}.${path}`
+    }
+
     extractState(state) {
         const model = this.model
         return model ? model.split('.').reduce((o, p) => o ? o[p] : o, state) : state
@@ -59,6 +63,10 @@ export class ReactiveElement2 extends HTMLElement {
 
     eventHandler(action) {
         return event => dispatch(this.model, action, event.target.value)
+    }
+
+    dispatchChecked(action) {
+        return event => dispatch(this.model, action, event.target.checked)
     }
 
     render() {
