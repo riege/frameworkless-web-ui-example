@@ -1,6 +1,6 @@
 import { ExampleView } from "./base/elements.js"
 import "./examples/counter_view.js"
-import counterModel from "./examples/counter_model.js"
+import CounterModel from "./examples/counter_model.js"
 import "./examples/synchronized_counter_view.js"
 import SynchronizedCounterModel from "./examples/synchronized_counter_model.js"
 import "./examples/actionlog_view.js"
@@ -13,9 +13,9 @@ window.store = store
 window.getState = getState
 
 init({
-    counterModel,
-    counterModel2: counterModel,
-    SynchronizedCounterModel,
+    counterModelA: new CounterModel(),
+    counterModelB: new CounterModel(),
+    synchronizedCounterModel: new SynchronizedCounterModel(),
 })
 
 subscribe(() => console.log(getState()))

@@ -5,10 +5,6 @@ export default class CounterModel {
         this[immerable] = true
         this.value = 0
     }
-
-    static initialState() {
-        return new this()
-    }
 }
 
 export function increase(state) {

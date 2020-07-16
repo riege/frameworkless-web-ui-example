@@ -1,11 +1,12 @@
 import counterModel from './counter_model.js'
+import CounterModel from './counter_model.js'
 
 export default class SynchronizedCounterModel {
     constructor() {
-        this._counterA = counterModel.initialState()
-        this._counterB = counterModel.initialState()
-        this._counterC = counterModel.initialState()
-        this.counterCounter = counterModel.initialState()
+        this._counterA = new CounterModel()
+        this._counterB = new CounterModel()
+        this._counterC = new CounterModel()
+        this.counterCounter = new CounterModel()
         this._counters = []
         this.synchronized = false
         this.synchronizedList = false
@@ -13,7 +14,7 @@ export default class SynchronizedCounterModel {
 
     get counters() {
         for (let i = this._counters.length; i < this.counterCounter.value; i++) {
-            this._counters[i] = counterModel.initialState()
+            this._counters[i] = new CounterModel()
         }
         this._counters.splice(this.counterCounter.value, this._counters.length)
         if (this.synchronizedList) {

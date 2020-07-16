@@ -1,4 +1,4 @@
-import counterModel from '../src/examples/counter_model.js'
+import CounterModel from '../src/examples/counter_model.js'
 import { increase, decrease, set } from '../src/examples/counter_model.js'
 import {expect} from './mocha.js'
 import { init, dispatch, getState } from '../src/base/store2.js'
@@ -8,7 +8,7 @@ import produce from '../src/deps/immer.js'
 describe('store', function() {
 
     beforeEach(() => {
-        init({counter: counterModel})
+        init({counter: new CounterModel()})
         this.testAction = function(action, expectedValue, payload) {
             dispatch('counter', action, payload)
             expect(getState()).to.deep.equal({counter: { value: expectedValue }})
