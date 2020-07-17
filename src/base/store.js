@@ -1,44 +1,41 @@
 import produce from '../deps/immer.js'
 
-function initialState() {
-    return Object.freeze({
+let state
+let listeners = []
+
+export function init(initialState) {
+    state = produce(initialState, s => s)
+    listeners.forEach(f => f())
+}
+
+export function getState() {
+    return state
+}
+
+export function dispatch(model, action, args) {
+    state = reducer(state, model, action, args)
+    listeners.forEach(f => f())
+}
+
+export function reducer(state, model, actionFunction, payload) {
+    return produce(state, s => {
+        const modelState = extractProperty(s, model)
+        actionFunction(modelState, payload)
     })
 }
 
-function reducer(state, action) {
-    return produce(state, s => process(s, action))
+export function subscribe(listener) {
+    listeners.push(listener)
+    return unsubscribe.bind(null, listener)
 }
 
-function process(state, action) {
+export function unsubscribe(toRemove) {
+    listeners = listeners.filter(l => l != toRemove)
 }
 
-const store = {
-    state: initialState(),
-    listeners: [],
-    getState() {
-        return this.state
-    },
-    dispatch(action) {
-        this.state = reducer(this.state, action)
-        this.listeners.forEach(f => f())
-    },
-    subscribe(listener) {
-        this.listeners.push(listener)
-        return this.unsubscribe.bind(this, listener)
-    },
-    unsubscribe(toRemove) {
-        this.listeners = this.listeners.filter(l => l != toRemove)
-    },
-}
-
-export default {
-    getState() {
-        return store.getState()
-    },
-    dispatch(type, payload) {
-        store.dispatch({ type, payload })
-    },
-    subscribe(listener) {
-        return store.subscribe(listener)
-    },
+function extractProperty(object, path) {
+    if (!path) {
+        return object
+    }
+    return path.split('.').reduce((o, prop) => o[prop], object)
 }

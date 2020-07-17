@@ -1,8 +1,8 @@
-import { ReactiveElement2 } from '../base/elements.js'
+import { ReactiveElement } from '../base/elements.js'
 import {html} from '../deps/lit-html.js'
 import { setSync } from './synchronized_counter_list_model.js'
 
-class SynchronizedCounterListView extends ReactiveElement2 {
+class SynchronizedCounterListView extends ReactiveElement {
 
     counters(counters) {
         return counters.map((_c, i) => html`<h5>Counter ${i}</h5> <counter-view model="${this.subModel(`counters.${i}`)}"></counter-view>`)

@@ -1,7 +1,7 @@
 import CounterModel from '../src/examples/counter_model.js'
 import { increase, decrease, set } from '../src/examples/counter_model.js'
 import {expect} from './mocha.js'
-import { init, dispatch, getState } from '../src/base/store2.js'
+import { init, dispatch, getState } from '../src/base/store.js'
 import {immerable } from '../src/deps/immer.js'
 import produce from '../src/deps/immer.js'
 

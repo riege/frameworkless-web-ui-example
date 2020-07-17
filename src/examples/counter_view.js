@@ -1,9 +1,8 @@
-import store from '../base/store.js'
-import { ReactiveElement2 } from '../base/elements.js'
+import { ReactiveElement } from '../base/elements.js'
 import { html } from '../deps/lit-html.js'
 import { increase, decrease, set } from './counter_model.js'
 
-class CounterView extends ReactiveElement2 {
+class CounterView extends ReactiveElement {
 
     render() {
         this.style.display = 'block'

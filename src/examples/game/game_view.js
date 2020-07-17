@@ -1,4 +1,4 @@
-import { ReactiveElement2 } from '../../base/elements.js'
+import { ReactiveElement } from '../../base/elements.js'
 import { html } from '../../deps/lit-html.js'
 import { STATE_VICTORY } from './game_model.js'
 import { startGame, playCard, endTurn, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
@@ -72,7 +72,7 @@ class OutOfManaMessage extends HTMLElement {
 }
 customElements.define('game-oom-message', OutOfManaMessage)
 
-class GameView extends ReactiveElement2 {
+class GameView extends ReactiveElement {
     render() {
         const game = this.state
         let discarded = ""
@@ -88,7 +88,6 @@ class GameView extends ReactiveElement2 {
         this.animateNumber(this.previousGame, game, 'player', 'block')
         this.animateNumber(this.previousGame, game, 'enemy', 'hp')
         this.animateNumber(this.previousGame, game, 'enemy', 'block')
-        console.log(game, this.previousGame);
         
         this.previousGame = game
         return html `
@@ -109,9 +108,7 @@ cards(hand, cssClass, mana) {
 }
 
  card(mana, card, index) {
-    const handler = mana > 0
-                   ? this.dispatch(playCard, index)
-                   : showOutOfManaMessage
+    const handler = mana > 0 ? this.dispatch(playCard, index) : showOutOfManaMessage
     return html `
         <div class="card card-${index} card-${card.name}" @click="${handler}">
             <h1>${card.name}</h1>
