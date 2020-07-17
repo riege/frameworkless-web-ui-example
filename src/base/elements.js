@@ -38,6 +38,8 @@ export class ReactiveElement extends HTMLElement {
 export class ReactiveElement2 extends HTMLElement {
 
     connectedCallback() {
+        console.log('Connected ' + this.tagName);
+        
         this.model = this.getAttribute('model')
         this._update()
         subscribe(_ => this._update())
