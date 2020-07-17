@@ -67,6 +67,10 @@ export class ReactiveElement2 extends HTMLElement {
         return event => dispatch(this.model, action, event.target.value)
     }
 
+    dispatch(action, args) {
+        return _event => dispatch(this.model, action, args)
+    }
+
     dispatchChecked(action) {
         return event => dispatch(this.model, action, event.target.checked)
     }

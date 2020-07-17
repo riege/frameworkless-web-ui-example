@@ -1,13 +1,10 @@
 import cards from './cards.js'
+import { immerable } from '../../deps/immer.js'
 
 const STATE_WELCOME = 'GAME_STATE_WELCOME'
 const STATE_GAME = 'GAME_STATE_GAME'
 const STATE_GAME_OVER = 'GAME_STATE_GAME_OVER'
 const STATE_VICTORY = 'GAME_STATE_VICTORY'
-
-const START_GAME = 'GAME_START_GAME'
-const PLAY_CARD = 'GAME_PLAY_CARD'
-const END_TURN = 'GAME_END_TURN'
 
 function generateAction() {
     const names = ['willBlock', 'willAttack']
@@ -28,18 +25,10 @@ function shuffle(array) {
     }
 }
 
-const gameModel = {
-
-    deck() {
-        const result = Array(13)
-        result.fill(cards.ATTACK, 0, 5)
-        result.fill(cards.BLOCK, 5, 10)
-        result.fill(cards.DEFEND, 10, 13)
-        return result
-    },
-
-    initialState() {
-        return {
+export default class GameModel {
+    constructor() {
+        this[immerable] = true
+        Object.assign(this, {
             state: STATE_WELCOME,
             turn: 0,
             player: {
@@ -55,38 +44,19 @@ const gameModel = {
             },
             cards: {
                 hand: [],
-                draw: this.deck(),
+                draw: GameModel.deck(),
                 discard: [],
             },
-        }
-    },
+        })
+    }
 
-    process(state, action) {
-        if (action.type === START_GAME) {
-            Object.assign(state, this.initialState())
-            state.state = STATE_GAME
-            this.startTurn(state)
-        }
-        if (action.type === END_TURN) {
-            this.takeDamage(state.player, state.enemy.willAttack)
-            state.enemy.block = state.enemy.willBlock
-            this.startTurn(state)
-        }
-        if (action.type === PLAY_CARD) {
-            if (state.player.mana > 0) {
-                const cardIndex = action.payload
-                const card = state.cards.hand[cardIndex]
-                state.cards.hand = state.cards.hand.filter((_, i) => i != cardIndex)
-                state.cards.discard.push(card)
-                this.takeDamage(state.enemy, card.damage ? card.damage : 0)
-                state.player.block += card.block ? card.block : 0
-                state.player.mana -= 1
-                if (state.enemy.hp <= 0) {
-                    state.state = STATE_VICTORY
-                }
-            }
-        }
-    },
+    static deck() {
+        const result = Array(13)
+        result.fill(cards.ATTACK, 0, 5)
+        result.fill(cards.BLOCK, 5, 10)
+        result.fill(cards.DEFEND, 10, 13)
+        return result
+    }
 
     startTurn(state) {
         state.turn += 1
@@ -107,7 +77,7 @@ const gameModel = {
         }
         state.player.mana = 3
         state.player.block = 0
-    },
+    }
 
     takeDamage(character, damage) {
         const newBlock = character.block - damage
@@ -117,7 +87,7 @@ const gameModel = {
         } else {
             character.block = newBlock
         }
-    },
+    }
 
     generateEnemyAction(enemy) {
         enemy.willAttack = 0
@@ -125,15 +95,38 @@ const gameModel = {
         const parts = [generateAction(), generateAction()]
         parts.forEach(p => enemy[p.name] += p.value)
     }
+
 }
 
-export default gameModel
+export function startGame(model) {
+    Object.assign(model, new GameModel())
+    model.state = STATE_GAME
+    model.startTurn(model)
+}
+
+export function endTurn(model) {
+    model.takeDamage(model.player, model.enemy.willAttack)
+    model.enemy.block = model.enemy.willBlock
+    model.startTurn(model)
+}
+
+export function playCard(model, cardIndex) {
+    if (model.player.mana > 0) {
+        const card = model.cards.hand[cardIndex]
+        model.cards.hand = model.cards.hand.filter((_, i) => i != cardIndex)
+        model.cards.discard.push(card)
+        model.takeDamage(model.enemy, card.damage ? card.damage : 0)
+        model.player.block += card.block ? card.block : 0
+        model.player.mana -= 1
+        if (model.enemy.hp <= 0) {
+            model.state = STATE_VICTORY
+        }
+    }
+}
+
 export {
     STATE_WELCOME,
     STATE_GAME,
     STATE_GAME_OVER,
     STATE_VICTORY,
-    START_GAME,
-    PLAY_CARD,
-    END_TURN,
 }

@@ -1,9 +1,7 @@
-import { ReactiveElement } from '../../base/elements.js'
-import { html, render } from '../../deps/lit-html.js'
-import store from '../../base/store.js'
-import gameModel, { STATE_VICTORY } from './game_model.js'
-import { START_GAME, PLAY_CARD, END_TURN, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
-import c from './cards.js'
+import { ReactiveElement2 } from '../../base/elements.js'
+import { html } from '../../deps/lit-html.js'
+import { STATE_VICTORY } from './game_model.js'
+import { startGame, playCard, endTurn, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
 
 function characterStats(char) {
     const row = (name, val) => html `<tr class="${name}"><td>${name}:</td><td>${val}</td></tr>`
@@ -51,52 +49,12 @@ function enemyIntent(action, value) {
     return html `<p class="enemy-intent-${action}">${action} ${typeof(value) === 'number' ? value : ''}</p>`
 }
 
-function cards(hand, cssClass, mana) {
-    return html `
-        <div class="player-hand ${cssClass}">
-            ${hand.map(card.bind(null, mana > 0))}
-        </div>
-    `
-}
-
 function showOutOfManaMessage(event) {
     const element = document.createElement('game-oom-message')
     element.style.position = 'fixed'
     element.style.top = `${event.clientY - 50}px`
     element.style.left = `${event.clientX - element.clientWidth}px`
     document.body.appendChild(element)
-}
-
-function card(mana, card, index) {
-    const handler = mana > 0
-                   ? () => store.dispatch(PLAY_CARD, index)
-                   : showOutOfManaMessage
-    return html `
-        <div class="card card-${index} card-${card.name}" @click="${handler}">
-            <h1>${card.name}</h1>
-            <p>
-                ${card.description}
-            </p>
-        </div>
-    `
-}
-
-function arena(game) {
-    return html `<div class="arena">${arenaContent(game)}</div>`
-}
-
-function arenaContent(game) {
-    const startGame = () => store.dispatch(START_GAME)
-    switch (game.state) {
-        case STATE_WELCOME:
-            return html `<h2>Welcome to the game</h2><button @click="${startGame}">Start new game</button>`
-        case STATE_GAME:
-            return html `<button @click="${() => store.dispatch(END_TURN)}">End turn</button>`
-        case STATE_GAME_OVER:
-            return html `<h2>Defeat!</h2><button @click="${startGame}">Try again</button>`
-        case STATE_VICTORY:
-            return html `<h2>Victory!</h2><button @click="${startGame}">Start new game</button>`
-    }
 }
 
 class OutOfManaMessage extends HTMLElement {
@@ -114,9 +72,9 @@ class OutOfManaMessage extends HTMLElement {
 }
 customElements.define('game-oom-message', OutOfManaMessage)
 
-class GameView extends ReactiveElement {
+class GameView extends ReactiveElement2 {
     render() {
-        const game = this.state.game
+        const game = this.state
         let discarded = ""
         if (this.previousGame && this.previousGame.turn !== game.turn) {
             this.classList.remove('game-animation-draw-cards')
@@ -124,21 +82,62 @@ class GameView extends ReactiveElement {
             void this.offsetWidth;
             this.classList.add('game-animation-draw-cards')
             this.classList.add('game-animation-discard-cards')
-            discarded = cards(this.previousGame.cards.hand, "discarded")
+            discarded = this.cards(this.previousGame.cards.hand, "discarded")
         }
         this.animateNumber(this.previousGame, game, 'player', 'hp')
         this.animateNumber(this.previousGame, game, 'player', 'block')
         this.animateNumber(this.previousGame, game, 'enemy', 'hp')
         this.animateNumber(this.previousGame, game, 'enemy', 'block')
+        console.log(game, this.previousGame);
+        
         this.previousGame = game
         return html `
-            ${arena(game)}
+            ${this.arena(game)}
             ${player(game.player)}
             ${discarded}
-            ${game.state === STATE_GAME ? cards(game.cards.hand, null, game.player.mana) : ""}
+            ${game.state === STATE_GAME ? this.cards(game.cards.hand, null, game.player.mana) : ""}
             ${enemy(game.enemy)}
         `
     }
+
+cards(hand, cssClass, mana) {
+    return html `
+        <div class="player-hand ${cssClass}">
+            ${hand.map((card, i) => this.card(mana, card, i))}
+        </div>
+    `
+}
+
+ card(mana, card, index) {
+    const handler = mana > 0
+                   ? this.dispatch(playCard, index)
+                   : showOutOfManaMessage
+    return html `
+        <div class="card card-${index} card-${card.name}" @click="${handler}">
+            <h1>${card.name}</h1>
+            <p>
+                ${card.description}
+            </p>
+        </div>
+    `
+}
+
+ arena(game) {
+    return html `<div class="arena">${this.arenaContent(game)}</div>`
+}
+
+ arenaContent(game) {
+    switch (game.state) {
+        case STATE_WELCOME:
+            return html `<h2>Welcome to the game</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
+        case STATE_GAME:
+            return html `<button @click="${this.dispatch(endTurn)}">End turn</button>`
+        case STATE_GAME_OVER:
+            return html `<h2>Defeat!</h2><button @click="${this.dispatch(startGame)}">Try again</button>`
+        case STATE_VICTORY:
+            return html `<h2>Victory!</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
+    }
+}
 
     animateNumber(previousGame, game, char, property) {
         if (previousGame && previousGame[char][property] !== game[char][property]) {

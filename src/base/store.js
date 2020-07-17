@@ -1,9 +1,7 @@
 import produce from '../deps/immer.js'
-import gameModel from '../examples/game/game_model.js'
 
 function initialState() {
     return Object.freeze({
-        game: Object.freeze(gameModel.initialState())
     })
 }
 
@@ -12,7 +10,6 @@ function reducer(state, action) {
 }
 
 function process(state, action) {
-    gameModel.process(state.game, action)
 }
 
 const store = {
