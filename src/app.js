@@ -1,21 +1,27 @@
-import { ExampleView } from "./base/elements.js"
+// custom elements
+import "./base/elements.js"
 import "./examples/counter_view.js"
-import CounterModel from "./examples/counter_model.js"
 import "./examples/synchronized_counter_view.js"
-import SynchronizedCounterModel from "./examples/synchronized_counter_model.js"
 import "./examples/actionlog_view.js"
 import "./examples/game/game_view.js"
+
+// models
+import CounterModel from "./examples/counter_model.js"
+import SynchronizedCounterModel from "./examples/synchronized_counter_model.js"
 import store from "./base/store.js"
 import {init, getState, subscribe} from "./base/store2.js"
 
 
+// assign globals for easy access in the browser console
 window.store = store
 window.getState = getState
 
+// show state changes in the browser console
+subscribe(() => console.log(getState()))
+
+// initialize the model tree
 init({
     counterModelA: new CounterModel(),
     counterModelB: new CounterModel(),
     synchronizedCounterModel: new SynchronizedCounterModel(),
 })
-
-subscribe(() => console.log(getState()))
