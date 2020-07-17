@@ -3,7 +3,6 @@ import "./base/elements.js"
 import "./examples/counter_view.js"
 import "./examples/synchronized_counter_view.js"
 import "./examples/synchronized_counter_list_view.js"
-import "./examples/actionlog_view.js"
 import "./examples/game/game_view.js"
 
 // models
