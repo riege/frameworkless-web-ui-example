@@ -145,10 +145,3 @@ cards(hand, cssClass, mana) {
     }
 }
 customElements.define('game-view', GameView)
-
-class GameAnimation extends HTMLElement {
-    connectedCallback() {
-        this.appendChild(new OutOfManaMessage())
-    }
-}
-customElements.define('game-animation', GameAnimation)
