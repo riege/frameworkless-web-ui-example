@@ -34,7 +34,7 @@ export class ReactiveElement extends HTMLElement {
 
     _update() {
         this.state = this.extractState(getState())
-        if (!this.state) {
+        if (this.state === undefined) {
             return
         }
         const template = this.render()

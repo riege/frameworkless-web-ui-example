@@ -263,3 +263,20 @@ game-view, game-animation {
           transform: scale(2) translateY(-5vw);
       }
   }
+
+example-view.order {
+    grid-column: 1 / -1;
+}
+
+bound-textfield label {
+    display: block;
+}
+
+bound-textfield input {
+    display: block;
+}
+
+form.order {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
