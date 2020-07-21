@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        // this tells VSCode to use ES6-style modules
+        "module": "es6",
+        "target": "es2020",
+    }
+}
