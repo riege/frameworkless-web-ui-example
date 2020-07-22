@@ -1,5 +1,5 @@
 import { html, render } from '../deps/lit-html.js'
-import {getState, dispatch, subscribe} from './store.js'
+import {getState, dispatch, subscribe, getValidationResults} from './store.js'
 
 export class ExampleView extends HTMLElement {
 
@@ -30,6 +30,18 @@ export class ReactiveElement extends HTMLElement {
     extractState(state) {
         const model = this.model
         return model ? model.split('.').reduce((o, p) => o ? o[p] : o, state) : state
+    }
+
+    get valid() {
+        return getValidationResults(this.model).length <= 0
+    }
+
+    get validationMessage() {
+        return getValidationResults(this.model).map(r => r.message).join()
+    }
+
+    get validationIcon() {
+        return this.valid ? "✓" : "✗"
     }
 
     _update() {

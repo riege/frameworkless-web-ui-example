@@ -1,6 +1,6 @@
 import { ReactiveElement } from '../base/elements.js';
 import { html } from '../deps/lit-html.js';
-import { setValue } from '../base/store.js';
+import { setValue, getValidationResults } from '../base/store.js';
 import { PAYMENT_PAYPAL, PAYMENT_CASH_ON_DELIVERY, PAYMENT_INVOICE } from './order_model.js';
 
 class BoundTextfield extends ReactiveElement {
@@ -13,6 +13,10 @@ class BoundTextfield extends ReactiveElement {
     render() {
         return html`
             <label for="${this.name}">${this.name}:</label>
+            <div class="validation validation-${this.valid ? 'ok' : 'error'}">
+                <div class="validation-icon">${this.validationIcon}</div>
+                <div class="validation-message">${this.validationMessage}</div>
+            </div>
             <input type="text"
                    name="${this.name}"
                    .value="${this.state}"

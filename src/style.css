@@ -268,12 +268,44 @@ example-view.order {
     grid-column: 1 / -1;
 }
 
+bound-textfield {
+    padding-left: 1em;
+}
+
 bound-textfield label {
     display: block;
 }
 
 bound-textfield input {
     display: block;
+    padding-left: 1em;
+    width: 14em;
+}
+
+.validation > div {
+    position: absolute;
+}
+
+.validation-ok {
+    color: green;
+}
+
+.validation-error {
+    color: red;
+}
+
+.validation-icon {
+    padding: 1px;
+    padding-left: 0.2em
+}
+
+.validation-message {
+    visibility: hidden;
+    margin-left: 13em;
+}
+
+.validation:hover .validation-message {
+    visibility: visible;
 }
 
 form.order {
