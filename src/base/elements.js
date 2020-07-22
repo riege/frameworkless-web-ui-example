@@ -32,12 +32,16 @@ export class ReactiveElement extends HTMLElement {
         return model ? model.split('.').reduce((o, p) => o ? o[p] : o, state) : state
     }
 
+    get validationResults() {
+        return getValidationResults(this.model)
+    }
+
     get valid() {
-        return getValidationResults(this.model).length <= 0
+        return this.validationResults.length <= 0
     }
 
     get validationMessage() {
-        return getValidationResults(this.model).map(r => r.message).join()
+        return this.validationResults.map(r => r.message).join()
     }
 
     get validationIcon() {
@@ -58,7 +62,10 @@ export class ReactiveElement extends HTMLElement {
     }
 
     dispatch(action, args) {
-        return _event => dispatch(this.model, action, args)
+        return event => {
+            event.preventDefault()
+            dispatch(this.model, action, args)
+        }
     }
 
     dispatchChecked(action) {

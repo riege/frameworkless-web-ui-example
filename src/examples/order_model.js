@@ -1,5 +1,6 @@
 import { immerable } from "../deps/immer.js";
 import { VALIDATOR } from "../base/store.js";
+import { submitOrderTask } from './order_service.js';
 
 function constant(name) {
     return `OrderModel#${name}`
@@ -8,7 +9,6 @@ function constant(name) {
 export const STATE_DRAFT = constant('STATE_DRAFT')
 export const STATE_SUBMITTING = constant('STATE_SUBMITTING')
 export const STATE_ORDERED = constant('STATE_ORDERED')
-export const STATE_FAILED = constant('STATE_FAILED')
 
 export const PAYMENT_PAYPAL = constant('PAYMENT_PAYPAL')
 export const PAYMENT_CASH_ON_DELIVERY = constant('PAYMENT_CASH_ON_DELIVERY')
@@ -95,4 +95,24 @@ export class OrderModel {
             message: 'this is a test',
         }]
     }
+}
+
+export function submitOrder(orderModel) {
+    orderModel.orderState = STATE_SUBMITTING
+    orderModel.error = ""
+    return {task: submitOrderTask, action: submissionComplete}
+}
+
+function submissionComplete(orderModel, response) {
+    if (!response.error) {
+        orderModel.orderState = STATE_ORDERED
+    } else {
+        orderModel.orderState = STATE_DRAFT
+        orderModel.error = response.error
+    }
+}
+
+export function editOrder(orderModel) {
+    orderModel.orderState = STATE_DRAFT
+    orderModel.error = ""
 }

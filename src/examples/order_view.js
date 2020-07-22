@@ -1,7 +1,7 @@
 import { ReactiveElement } from '../base/elements.js';
 import { html } from '../deps/lit-html.js';
 import { setValue, getValidationResults } from '../base/store.js';
-import { PAYMENT_PAYPAL, PAYMENT_CASH_ON_DELIVERY, PAYMENT_INVOICE } from './order_model.js';
+import { PAYMENT_PAYPAL, PAYMENT_CASH_ON_DELIVERY, PAYMENT_INVOICE, submitOrder, STATE_DRAFT, STATE_ORDERED, editOrder } from './order_model.js';
 
 class BoundTextfield extends ReactiveElement {
 
@@ -110,13 +110,28 @@ class OrderView extends ReactiveElement {
                         Payment Method
                     </bound-select>
                     <br>
-                    <label for="state">Order State:</label>
-                    <input name="state" .value="${this.state.orderState}" disabled>
+                    <button
+                        .disabled="${!this.valid || this.state.orderState !== STATE_DRAFT}"
+                        @click="${this.dispatch(submitOrder)}">
+                        Submit Order
+                    </button>
+                    <button
+                        style="visibility: ${this.state.orderState === STATE_ORDERED ? 'visible' : 'hidden'}"
+                        @click="${this.dispatch(editOrder)}">
+                        Edit Order
+                    </button>
                     <br>
-                    <button>Submit Order</button>
+                    <span>${this.state.error}</span>
+                    ${this.renderValidationMessages()}
                 </div>
             </form>
         `
+    }
+
+    renderValidationMessages() {
+        const messages = this.validationResults
+            .map(result => html`<li>${result.message}</li>`)
+        return html`<ul>${messages}</ul>`
     }
 }
 customElements.define('order-view', OrderView)

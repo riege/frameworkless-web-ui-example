@@ -23,19 +23,34 @@ export function getValidationResults(model) {
 }
 
 export function dispatch(model, action, args) {
-    state = reducer(state, model, action, args)
-    validate(validationState, state)
+    const [newState, tasks] = reducer(state, model, action, args)
+    state = newState
+    validate(validationState, newState)
+    execute(model, tasks)
     listeners.forEach(f => f())
 }
 
 function reducer(state, model, actionFunction, payload) {
-    return produce(state, s => {
+    let tasks
+    const newState = produce(state, s => {
         if (actionFunction === setValue) {
             setProperty(s, model, payload)
         } else {
             const modelState = extractProperty(s, model)
-            actionFunction(modelState, payload)
+            tasks = actionFunction(modelState, payload)
         }
+    })
+    return [newState, tasks || []]
+}
+
+function execute(model, tasks) {
+    if (!Array.isArray(tasks)) {
+        tasks = [tasks]
+    }
+    tasks.forEach(({action, task, request}) => {
+        task()
+            .then(result => dispatch(model, action, {result, request}))
+            .catch(error => {console.error(error); dispatch(model, action, {error, request})})
     })
 }
 
