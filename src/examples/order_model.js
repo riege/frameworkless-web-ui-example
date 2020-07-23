@@ -1,5 +1,6 @@
 import { immerable } from "../deps/immer.js";
-import { VALIDATOR } from "../base/store.js";
+import { AFTER_ACTION } from "../base/store.js";
+import { VALIDATION_RESULTS } from "../base/validation.js";
 import { submitOrderTask } from './order_service.js';
 
 function constant(name) {
@@ -28,22 +29,6 @@ function validateNotEmpty(object, prop) {
     }
 }
 
-export class OrderValidator {
-    constructor() {
-        this.shippingAddress = new PostalAddressValidator()
-        this.invoiceAddress = new PostalAddressValidator()
-    }
-}
-
-export class PostalAddressValidator {
-    [VALIDATOR](order) {
-        const result = Object.getOwnPropertyNames(order)
-            .map(property => validateNotEmpty(order, property))
-            .filter(r => r !== undefined)
-        return result
-    }
-}
-
 export class PostalAddressModel {
     constructor() {
         this[immerable] = true
@@ -54,8 +39,8 @@ export class PostalAddressModel {
         this.country = null
     }
 
-    [VALIDATOR]() {
-        return Object.getOwnPropertyNames(this)
+    [AFTER_ACTION]() {
+        this[VALIDATION_RESULTS] = Object.getOwnPropertyNames(this)
             .map(property => validateNotEmpty(this, property))
             .filter(r => r !== undefined)
     }
@@ -84,16 +69,15 @@ export class OrderModel {
 
     set syncAddresses(value) {
         if (!value) {
-            this._invoiceAddress = this.shippingAddress
+            this._invoiceAddress = Object.assign(new PostalAddressModel(), this.shippingAddress)
         }
         this._syncAddresses = value
     }
 
-    [VALIDATOR]() {
-        return [{
-            key: 'shippingAddress.name',
-            message: 'this is a test',
-        }]
+    [AFTER_ACTION]() {
+        this[VALIDATION_RESULTS] = this.invoiceAddress[VALIDATION_RESULTS]
+            ?.map(result => Object.assign({}, result, {key: 'invoiceAddress.' + result.key}))
+        this._invoiceAddress[VALIDATION_RESULTS] = []
     }
 }
 

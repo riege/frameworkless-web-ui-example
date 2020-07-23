@@ -11,8 +11,9 @@ import CounterModel from "./examples/counter_model.js"
 import SynchronizedCounterModel from "./examples/synchronized_counter_model.js"
 import SynchronizedCounterListModel from "./examples/synchronized_counter_list_model.js"
 import GameModel from "./examples/game/game_model.js"
-import {init, getState, subscribe, getValidationResults} from "./base/store.js"
-import { OrderModel, OrderValidator } from './examples/order_model.js'
+import {init, getState, subscribe} from "./base/store.js"
+import {getValidationResults} from "./base/validation.js"
+import { OrderModel } from './examples/order_model.js'
 
 
 // assign globals for easy access in the browser console
@@ -31,7 +32,4 @@ init({
     synchronizedCounterListModel: new SynchronizedCounterListModel(),
     gameModel: new GameModel(),
     orderModel: new OrderModel(),
-},
-{
-    orderModel: new OrderValidator(),
 })

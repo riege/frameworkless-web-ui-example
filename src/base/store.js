@@ -1,97 +1,78 @@
 import produce from '../deps/immer.js'
+import { createStore } from '../deps/redux.js'
 
-export const VALIDATOR = Symbol("store#VALIDATOR")
+const ACTION_INIT = 'ACTION_INIT'
+const ACTION_FUNCTION = 'ACTION_FUNCTION'
+export const AFTER_ACTION = Symbol('store#AFTER_ACTION')
 
-let state
-let validationState
-let validationResults
-let listeners = []
+const store = createStore(reducer)
 
-export function init(initialState, validators) {
-    state = produce(initialState, s => s)
-    validationState = produce(validators, v => v)
-    validate(validationState, state)
-    listeners.forEach(f => f())
+function reducer(state, action) {
+    switch (action.type) {
+        case ACTION_INIT:
+            return action.payload
+        case ACTION_FUNCTION:
+            return actionReducer(state, action.payload)
+        default:
+            return state
+    }
+}
+
+export function init(initialState) {
+    initialState = produce(initialState, s => actionReducer(s, {model: '', action: () => null, args: null}))
+    store.dispatch({type: ACTION_INIT, payload: initialState})
 }
 
 export function getState() {
-    return state
-}
-
-export function getValidationResults(model) {
-    return validationResults.filter(result => result.key.startsWith(model))
+    return store.getState()
 }
 
 export function dispatch(model, action, args) {
-    const [newState, tasks] = reducer(state, model, action, args)
-    state = newState
-    validate(validationState, newState)
-    execute(model, tasks)
-    listeners.forEach(f => f())
-}
-
-function reducer(state, model, actionFunction, payload) {
-    let tasks
-    const newState = produce(state, s => {
-        if (actionFunction === setValue) {
-            setProperty(s, model, payload)
-        } else {
-            const modelState = extractProperty(s, model)
-            tasks = actionFunction(modelState, payload)
-        }
-    })
-    return [newState, tasks || []]
-}
-
-function execute(model, tasks) {
-    if (!Array.isArray(tasks)) {
-        tasks = [tasks]
-    }
-    tasks.forEach(({action, task, request}) => {
-        task()
-            .then(result => dispatch(model, action, {result, request}))
-            .catch(error => {console.error(error); dispatch(model, action, {error, request})})
-    })
-}
-
-function validate(validationState, state, model) {
-    if (validationState === null || typeof(validationState) !== 'object') {
-        return
-    }
-    if (model === undefined) {
-        validationResults = []
-    }
-    const validator = validationState[VALIDATOR]
-    if (validator) {
-        const results = validator.bind(validationState)(state)
-        results?.forEach(result => {
-            result.key = `${model}.${result.key}`
-            validationResults.push(result)
-        })
-    }
-    for (const key in validationState) {
-        validate(validationState[key], state[key], model !== undefined ? `${model}.${key}` : key)
-    }
-    if (model === undefined) {
-        validationResults = Object.freeze(validationResults)
-    }
-}
-
-function validateModel(allResults, state, model) {
-    const results = state[VALIDATOR](state)
-    for (const result of results) {
-        result.key = `${model}.${result.key}`
-        allResults.push(result)
-    }
+    store.dispatch({type: 'ACTION_FUNCTION', payload: {model, action, args}})
 }
 
 export function subscribe(listener) {
-    listeners.push(listener)
-    return unsubscribe.bind(null, listener)
+    return store.subscribe(listener)
 }
 
-function unsubscribe(toRemove) {
-    listeners = listeners.filter(l => l != toRemove)
+export function setValue() {
+    throw Error(`
+        Generic action for directly setting a value.
+        Should never be called.
+    `)
+}
+
+function execute(model, {action, task, request}) {
+    task()
+        .then(result => dispatch(model, action, {result, request}))
+        .catch(error => {console.error(error); dispatch(model, action, {error, request})})
+}
+
+function actionReducer(state, {model, action, args}) {
+    let tasks = []
+    const newState = produce(state, s => {
+        if (action === setValue) {
+            setProperty(s, model, args)
+        } else {
+            const modelState = extractProperty(s, model)
+            tasks.push(action(modelState, args))
+        }
+        callAfterActions(s)
+    })
+    tasks.filter(t => t).flat().forEach(t => execute(model, t))
+    return newState
+}
+
+function callAfterActions(state) {
+    if (state === null || typeof(state) !== 'object') {
+        return
+    }
+    for (const key in state) {
+        callAfterActions(state[key])
+    }
+    if (state[AFTER_ACTION]) {
+        state[AFTER_ACTION]()
+    }
 }
 
 function extractProperty(object, path) {
@@ -109,9 +90,3 @@ function setProperty(object, path, value) {
     parentObject[propertyToSet] = value
 }
 
-export function setValue() {
-    throw Error(`
-        Generic action for directly setting a value.
-        Should never be called.
-    `)
-}
