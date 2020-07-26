@@ -12,7 +12,6 @@ import SynchronizedCounterModel from "./examples/02_synchronized_counters/synchr
 import SynchronizedCounterListModel from "./examples/03_synchronized_counter_list/synchronized_counter_list_model.js"
 import GameModel from "./examples/04_card_game/game_model.js"
 import {init, getState, subscribe} from "./base/store.js"
-import {getValidationResults} from "./base/validation.js"
 import { OrderModel } from './examples/05_order/order_model.js'
 
 
@@ -22,7 +21,6 @@ window.getState = getState
 // show state changes in the browser console
 /* global console */
 subscribe(() => console.log(getState()))
-subscribe(() => console.log(getValidationResults("")))
 
 // initialize the model tree
 init({

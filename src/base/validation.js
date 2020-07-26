@@ -20,7 +20,6 @@ export function getValidationResults(model) {
 function collectResults(state) {
     const resultList = []
     collectResultsRec(state, resultList, '')
-    console.log('collectResults', resultList);
     return resultList
 }
 
@@ -32,7 +31,6 @@ function collectResultsRec(state, resultList, prefix) {
         state[VALIDATION_RESULTS].forEach(result => {
             const validationKey = prefix + result.key
             resultList.push([validationKey, result])
-            console.log('collectResultsRec', resultList);
         })
         
     }
