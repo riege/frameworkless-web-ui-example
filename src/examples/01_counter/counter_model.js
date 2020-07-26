@@ -1,4 +1,4 @@
-import {immerable} from '../deps/immer.js'
+import {immerable} from '../../deps/immer.js'
 
 export default class CounterModel {
     constructor() {

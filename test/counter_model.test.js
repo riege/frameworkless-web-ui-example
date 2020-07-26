@@ -1,6 +1,6 @@
-import CounterModel from '../src/examples/counter_model.js'
+import CounterModel from '../src/examples/01_counter/counter_model.js'
 import {checkModelClass} from './base_model.test.js'
-import { increase, decrease, set } from '../src/examples/counter_model.js'
+import { increase, decrease, set } from '../src/examples/01_counter/counter_model.js'
 import {expect} from './mocha.js'
 
 describe('counter_model', function() {

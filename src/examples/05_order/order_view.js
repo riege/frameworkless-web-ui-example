@@ -1,6 +1,6 @@
-import { ReactiveElement } from '../base/elements.js';
-import { html } from '../deps/lit-html.js';
-import { setValue } from '../base/store.js';
+import { ReactiveElement } from '../../base/elements.js';
+import { html } from '../../deps/lit-html.js';
+import { setValue } from '../../base/store.js';
 import { PAYMENT_PAYPAL, PAYMENT_CASH_ON_DELIVERY, PAYMENT_INVOICE, submitOrder, STATE_DRAFT, STATE_ORDERED, editOrder } from './order_model.js';
 
 class BoundTextfield extends ReactiveElement {

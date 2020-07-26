@@ -1,6 +1,6 @@
-import SynchronizedCounterModel, { setSync } from '../src/examples/synchronized_counter_model.js'
+import SynchronizedCounterModel, { setSync } from '../src/examples/02_synchronized_counters/synchronized_counter_model.js'
 import {checkModelClass} from './base_model.test.js'
-import { increase, decrease, set } from '../src/examples/counter_model.js'
+import { increase, decrease, set } from '../src/examples/01_counter/counter_model.js'
 import {expect} from './mocha.js'
 
 describe('SynchronizedCounterModel', function() {

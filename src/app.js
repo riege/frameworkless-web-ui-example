@@ -1,19 +1,19 @@
 // custom elements
 import "./base/elements.js"
-import "./examples/counter_view.js"
-import "./examples/synchronized_counter_view.js"
-import "./examples/synchronized_counter_list_view.js"
-import "./examples/game/game_view.js"
-import "./examples/order_view.js"
+import "./examples/01_counter/counter_view.js"
+import "./examples/02_synchronized_counters/synchronized_counter_view.js"
+import "./examples/03_synchronized_counter_list/synchronized_counter_list_view.js"
+import "./examples/04_card_game/game_view.js"
+import "./examples/05_order/order_view.js"
 
 // models
-import CounterModel from "./examples/counter_model.js"
-import SynchronizedCounterModel from "./examples/synchronized_counter_model.js"
-import SynchronizedCounterListModel from "./examples/synchronized_counter_list_model.js"
-import GameModel from "./examples/game/game_model.js"
+import CounterModel from "./examples/01_counter/counter_model.js"
+import SynchronizedCounterModel from "./examples/02_synchronized_counters/synchronized_counter_model.js"
+import SynchronizedCounterListModel from "./examples/03_synchronized_counter_list/synchronized_counter_list_model.js"
+import GameModel from "./examples/04_card_game/game_model.js"
 import {init, getState, subscribe} from "./base/store.js"
 import {getValidationResults} from "./base/validation.js"
-import { OrderModel } from './examples/order_model.js'
+import { OrderModel } from './examples/05_order/order_model.js'
 
 
 // assign globals for easy access in the browser console

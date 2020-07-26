@@ -1,7 +1,7 @@
 import { expect } from './mocha.js'
-import gameModel from '../src/examples/game/game_model.js'
-import GameModel, * as gm from '../src/examples/game/game_model.js'
-import cards from '../src/examples/game/cards.js'
+import gameModel from '../src/examples/04_card_game/game_model.js'
+import GameModel, * as gm from '../src/examples/04_card_game/game_model.js'
+import cards from '../src/examples/04_card_game/cards.js'
 
 function s(object) {
     return JSON.stringify(object, null, 4)

@@ -1,6 +1,6 @@
-import { immerable } from "../deps/immer.js";
-import { AFTER_ACTION } from "../base/store.js";
-import { VALIDATION_RESULTS } from "../base/validation.js";
+import { immerable } from "../../deps/immer.js";
+import { AFTER_ACTION } from "../../base/store.js";
+import { VALIDATION_RESULTS } from "../../base/validation.js";
 import { submitOrderTask } from './order_service.js';
 
 function constant(name) {
