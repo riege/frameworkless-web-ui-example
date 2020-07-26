@@ -1,4 +1,4 @@
-import cards from './cards.js'
+import { cards } from './cards.js'
 import { immerable } from '../../deps/immer.js'
 
 const STATE_WELCOME = 'GAME_STATE_WELCOME'
@@ -25,7 +25,7 @@ function shuffle(array) {
     }
 }
 
-export default class GameModel {
+export class GameModel {
     constructor() {
         this[immerable] = true
         Object.assign(this, {

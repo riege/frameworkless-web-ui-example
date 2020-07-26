@@ -1,6 +1,6 @@
 import {immerable} from '../../deps/immer.js'
 
-export default class CounterModel {
+export class CounterModel {
     constructor() {
         this[immerable] = true
         this.value = 0

@@ -1,8 +1,7 @@
-import produce  from '../src/deps/immer.js'
-import SynchronizedCounterListModel, { setSync } from '../src/examples/03_synchronized_counter_list/synchronized_counter_list_model.js'
-import {checkModelClass} from './base_model.test.js'
+import { SynchronizedCounterListModel, setSync } from '../src/examples/03_synchronized_counter_list/synchronized_counter_list_model.js'
+import { checkModelClass } from './base_model.test.js'
 import { increase, decrease, set } from '../src/examples/01_counter/counter_model.js'
-import {expect} from './mocha.js'
+import { expect } from './mocha.js'
 
 describe('SynchronizedCounterListModel', function() {
 

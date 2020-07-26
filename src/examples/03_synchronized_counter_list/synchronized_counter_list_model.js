@@ -1,4 +1,4 @@
-import CounterModel from '../01_counter/counter_model.js'
+import { CounterModel } from '../01_counter/counter_model.js'
 import {immerable} from '../../deps/immer.js'
 
 class CounterCounterModel {
@@ -21,7 +21,7 @@ class CounterCounterModel {
     }
 }
 
-export default class SynchronizedCounterListModel {
+export class SynchronizedCounterListModel {
     constructor() {
         this[immerable] = true
         this.counterCounter = new CounterCounterModel()

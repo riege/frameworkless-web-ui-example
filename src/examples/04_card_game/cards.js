@@ -7,4 +7,4 @@ for (let k in cards) {
     cards[k] = Object.freeze(cards[k])
 }
 Object.freeze(cards)
-export default cards
+export { cards }
