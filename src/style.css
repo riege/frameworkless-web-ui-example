@@ -34,6 +34,10 @@ example-view {
     padding: 0 1em 1em 1em;
 }
 
+example-view.single-example {
+    grid-column: 2;
+}
+
 example-view.game, example-view.animation {
     grid-column: 1 / -1;
 }
