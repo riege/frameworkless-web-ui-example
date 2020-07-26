@@ -32,11 +32,11 @@ describe('store', function() {
         init(state)
         expect(getState().message).to.equal('Hello, world!')
 
-        dispatch('', s => s.name = 'test')
+        dispatch('', s => { s.name = 'test' })
         expect(getState().name).to.equal('test')
         expect(getState().message).to.equal('Hello, test!')
 
-        dispatch('', s => s.position = [5,7])
+        dispatch('', s => { s.position = [5,7] })
         expect(getState().x).to.equal(5)
         expect(getState().y).to.equal(7)
 
