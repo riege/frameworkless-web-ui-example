@@ -1,5 +1,6 @@
 import produce from '../deps/immer.js'
 import { createStore } from '../deps/redux.js'
+import { extractProperty, setProperty } from '../base/util.js'
 
 const ACTION_INIT = 'ACTION_INIT'
 const ACTION_FUNCTION = 'ACTION_FUNCTION'
@@ -75,19 +76,3 @@ function callAfterActions(state) {
         state[AFTER_ACTION]()
     }
 }
-
-function extractProperty(object, path) {
-    if (!path) {
-        return object
-    }
-    return path.split('.').reduce((o, prop) => o[prop], object)
-}
-
-function setProperty(object, path, value) {
-    const seperatorIndex = path.lastIndexOf('.')
-    const parentPath = path.substring(0, seperatorIndex)
-    const propertyToSet = path.substring(seperatorIndex+1, path.length)
-    const parentObject = extractProperty(object, parentPath)
-    parentObject[propertyToSet] = value
-}
-

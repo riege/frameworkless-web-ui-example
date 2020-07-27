@@ -1,6 +1,7 @@
 import { immerable } from "../../deps/immer.js";
 import { AFTER_ACTION } from "../../base/store.js";
 import { VALIDATION_RESULTS } from "../../base/validation.js";
+import { isEmpty } from "../../base/util.js";
 import { submitOrderTask } from './order_service.js';
 
 function constant(name) {
@@ -14,13 +15,6 @@ export const STATE_ORDERED = constant('STATE_ORDERED')
 export const PAYMENT_PAYPAL = constant('PAYMENT_PAYPAL')
 export const PAYMENT_CASH_ON_DELIVERY = constant('PAYMENT_CASH_ON_DELIVERY')
 export const PAYMENT_INVOICE = constant('PAYMENT_INVOICE')
-
-function isEmpty(value) {
-    if(typeof(value) === 'string') {
-        return value.trim() === ''
-    }
-    return value === undefined || value === null
-}
 
 function validateNotEmpty(object, prop) {
     const value = object[prop]

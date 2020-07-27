@@ -1,6 +1,7 @@
 import { html, render } from '../deps/lit-html.js'
 import { getState, dispatch, subscribe } from './store.js'
-import { getValidationResults } from "../base/validation.js"
+import { getValidationResults } from '../base/validation.js'
+import { extractProperty } from './util.js'
 
 export class ReactiveElement extends HTMLElement {
 
@@ -15,24 +16,7 @@ export class ReactiveElement extends HTMLElement {
     }
 
     extractState(state) {
-        const model = this.model
-        return model ? model.split('.').reduce((o, p) => o ? o[p] : o, state) : state
-    }
-
-    get validationResults() {
-        return getValidationResults(this.model)
-    }
-
-    get valid() {
-        return this.validationResults.length <= 0
-    }
-
-    get validationMessage() {
-        return this.validationResults.map(r => r.message).join()
-    }
-
-    get validationIcon() {
-        return this.valid ? "✓" : "✗"
+        return extractProperty(state, this.model)
     }
 
     _update() {
@@ -61,6 +45,22 @@ export class ReactiveElement extends HTMLElement {
 
     render() {
         return html `Please implement ${this.constructor.name}.render()`
+    }
+
+    get validationResults() {
+        return getValidationResults(this.model)
+    }
+
+    get valid() {
+        return this.validationResults.length <= 0
+    }
+
+    get validationMessage() {
+        return this.validationResults.map(r => r.message).join()
+    }
+
+    get validationIcon() {
+        return this.valid ? "✓" : "✗"
     }
 
 }
