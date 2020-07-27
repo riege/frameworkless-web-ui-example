@@ -11,6 +11,8 @@ export class ReactiveElement extends HTMLElement {
         subscribe(_ => this._update())
     }
 
+    // reactive rendering implementation
+
     subModel(path) {
         return `${this.model}.${path}`
     }
@@ -28,6 +30,12 @@ export class ReactiveElement extends HTMLElement {
         render(template, this)
     }
 
+    render() {
+        return html `Please implement ${this.constructor.name}.render()`
+    }
+
+    // helpers for binding actions
+
     dispatchValue(action) {
         return event => dispatch(this.model, action, event.target.value)
     }
@@ -43,9 +51,7 @@ export class ReactiveElement extends HTMLElement {
         return event => dispatch(this.model, action, event.target.checked)
     }
 
-    render() {
-        return html `Please implement ${this.constructor.name}.render()`
-    }
+    // helpers for binding validation results
 
     get validationResults() {
         return getValidationResults(this.model)
