@@ -78,10 +78,13 @@ class GameView extends ReactiveElement {
         let discarded = ""
         if (this.previousGame && this.previousGame.turn !== game.turn) {
             this.classList.remove('game-animation-draw-cards')
-            this.classList.remove('game-animation-discard-cards')
             void this.offsetWidth;
             this.classList.add('game-animation-draw-cards')
-            this.classList.add('game-animation-discard-cards')
+            if (this.previousGame.state === STATE_GAME) {
+                this.classList.remove('game-animation-discard-cards')
+                void this.offsetWidth
+                this.classList.add('game-animation-discard-cards')
+            }
             discarded = this.cards(this.previousGame.cards.hand, "discarded")
         }
         this.animateNumber(this.previousGame, game, 'player', 'hp')
