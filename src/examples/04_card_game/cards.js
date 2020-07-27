@@ -4,7 +4,7 @@ const cards = {
     DEFEND: { name: 'Defend', block: 4, damage: 3, description: 'Increase your block by 4 and attack the enemy for 3 damage' },
 }
 for (let k in cards) {
-    cards[k] = Object.freeze(cards[k])
+    Object.freeze(cards[k])
 }
 Object.freeze(cards)
 export { cards }
