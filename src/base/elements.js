@@ -28,7 +28,7 @@ export class ReactiveElement extends HTMLElement {
         render(template, this)
     }
 
-    eventHandler(action) {
+    dispatchValue(action) {
         return event => dispatch(this.model, action, event.target.value)
     }
 

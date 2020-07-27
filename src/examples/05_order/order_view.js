@@ -16,7 +16,7 @@ class BoundTextfield extends ReactiveElement {
             <input type="text"
                    name="${this.name}"
                    .value="${this.state}"
-                   @change="${this.eventHandler(setValue)}">
+                   @change="${this.dispatchValue(setValue)}">
             <div class="validation validation-${this.valid ? 'ok' : 'error'}">
                 <div class="validation-icon">${this.validationIcon}</div>
                 <div class="validation-message">${this.validationMessage}</div>
@@ -56,7 +56,7 @@ class BoundSelect extends ReactiveElement {
             <label for="${this.name}">${this.name}:</label>
             <select name="${this.name}"
                    .value="${this.state}"
-                   @change="${this.eventHandler(setValue)}">
+                   @change="${this.dispatchValue(setValue)}">
                    ${this.options.map(this.renderOption)}
             </select>
         `
