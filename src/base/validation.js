@@ -28,13 +28,16 @@ function collectResultsRec(state, resultList, prefix) {
         return
     }
     if (state[VALIDATION_RESULTS]) {
-        state[VALIDATION_RESULTS].forEach(result => {
-            const validationKey = prefix + result.key
-            resultList.push([validationKey, result])
-        })
-        
+        addResultsWithPrefix(resultList, prefix, state[VALIDATION_RESULTS])
     }
     for (const key in state) {
         collectResultsRec(state[key], resultList, prefix + key + '.')
     }
+}
+
+function addResultsWithPrefix(resultList, prefix, results) {
+    results.forEach(result => {
+        const validationKey = prefix + result.key
+        resultList.push([validationKey, result])
+    })
 }
