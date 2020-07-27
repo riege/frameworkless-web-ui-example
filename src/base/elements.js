@@ -2,20 +2,6 @@ import { html, render } from '../deps/lit-html.js'
 import { getState, dispatch, subscribe } from './store.js'
 import { getValidationResults } from "../base/validation.js"
 
-export class ExampleView extends HTMLElement {
-
-    connectedCallback() {
-        const title = this.getAttribute('title')
-        const template = html `
-            <section>
-                <h2>${title}</h2>
-                <div .innerHTML="${this.innerHTML}"></div>
-            </section>
-        `
-        render(template, this)
-    }
-}
-
 export class ReactiveElement extends HTMLElement {
 
     connectedCallback() {
@@ -78,5 +64,3 @@ export class ReactiveElement extends HTMLElement {
     }
 
 }
-
-customElements.define('example-view', ExampleView)

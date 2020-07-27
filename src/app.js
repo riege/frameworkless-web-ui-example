@@ -1,5 +1,5 @@
 // custom elements
-import "./base/elements.js"
+import "./examples/example_view.js"
 import "./examples/01_counter/counter_view.js"
 import "./examples/02_synchronized_counters/synchronized_counter_view.js"
 import "./examples/03_synchronized_counter_list/synchronized_counter_list_view.js"
