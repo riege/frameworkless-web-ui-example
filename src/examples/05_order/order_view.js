@@ -13,14 +13,14 @@ class BoundTextfield extends ReactiveElement {
     render() {
         return html`
             <label for="${this.name}">${this.name}:</label>
-            <div class="validation validation-${this.valid ? 'ok' : 'error'}">
-                <div class="validation-icon">${this.validationIcon}</div>
-                <div class="validation-message">${this.validationMessage}</div>
-            </div>
             <input type="text"
                    name="${this.name}"
                    .value="${this.state}"
                    @change="${this.eventHandler(setValue)}">
+            <div class="validation validation-${this.valid ? 'ok' : 'error'}">
+                <div class="validation-icon">${this.validationIcon}</div>
+                <div class="validation-message">${this.validationMessage}</div>
+            </div>
         `
     }
 }

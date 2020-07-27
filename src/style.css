@@ -265,6 +265,11 @@ bound-textfield input {
     width: 14em;
 }
 
+.validation {
+    position: relative;
+    top: -1.3em;
+}
+
 .validation > div {
     position: absolute;
 }
@@ -284,10 +289,27 @@ bound-textfield input {
 
 .validation-message {
     visibility: hidden;
-    margin-left: 13em;
+    background: lightgrey;
+    padding: 0.2em 1em;
+    border-radius: 0.5em;
+    top: 2em;
+    left: 1em;
 }
 
-.validation:hover .validation-message {
+.validation-message:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid lightgrey;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid lightgrey;
+    border-top: 10px solid transparent;
+    left: 2em;
+    top: -1em;
+}
+
+.validation-error:hover .validation-message, input:focus + .validation-error .validation-message {
     visibility: visible;
 }
 
