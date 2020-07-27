@@ -1,5 +1,5 @@
 import { CounterModel } from '../01_counter/counter_model.js'
-import {immerable} from '../../deps/immer.js'
+import { immerable } from '../../deps/immer.js'
 
 class CounterCounterModel {
     constructor() {

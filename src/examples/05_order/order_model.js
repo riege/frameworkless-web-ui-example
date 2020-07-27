@@ -75,8 +75,11 @@ export class OrderModel {
     }
 
     [AFTER_ACTION]() {
-        this[VALIDATION_RESULTS] = this.invoiceAddress[VALIDATION_RESULTS]
-            ?.map(result => Object.assign({}, result, {key: 'invoiceAddress.' + result.key}))
+        this[VALIDATION_RESULTS] = null
+        if (this.invoiceAddress[VALIDATION_RESULTS]) {
+            this[VALIDATION_RESULTS] = this.invoiceAddress[VALIDATION_RESULTS]
+                .map(result => Object.assign({}, result, {key: 'invoiceAddress.' + result.key}))
+        }
         this._invoiceAddress[VALIDATION_RESULTS] = []
     }
 }

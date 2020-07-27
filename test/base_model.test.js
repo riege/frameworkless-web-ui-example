@@ -1,6 +1,5 @@
 import { expect } from './mocha.js'
-import produce from '../src/deps/immer.js'
-import {isDraft} from '../src/deps/immer.js'
+import produce, { isDraft } from '../src/deps/immer.js'
 
 export function checkModelClass(modelClass) {
 

@@ -1,6 +1,6 @@
 import { html, render } from '../deps/lit-html.js'
-import {getState, dispatch, subscribe} from './store.js'
-import {getValidationResults} from "../base/validation.js"
+import { getState, dispatch, subscribe } from './store.js'
+import { getValidationResults } from "../base/validation.js"
 
 export class ExampleView extends HTMLElement {
 

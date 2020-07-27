@@ -42,6 +42,7 @@ export function setValue() {
     `)
 }
 
+/* global console */
 function execute(model, {action, task, request}) {
     task()
         .then(result => dispatch(model, action, {result, request}))
