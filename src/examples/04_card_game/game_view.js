@@ -4,7 +4,7 @@ import { STATE_VICTORY } from './game_model.js'
 import { startGame, playCard, endTurn, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
 
 function characterStats(char) {
-    const row = (name, val) => html `<tr class="${name}"><td>${name}:</td><td>${val}</td></tr>`
+    const row = (name, val) => val !== undefined ? html `<tr class="${name}"><td>${name}:</td><td>${val}</td></tr>` : null
     return html `
         <table class="character-stats">
             ${row('Health', char.hp)}
@@ -46,7 +46,7 @@ function enemyIntent(action, value) {
     if (!value) {
         return null
     }
-    return html `<p class="enemy-intent-${action}">${action} ${typeof(value) === 'number' ? value : ''}</p>`
+    return html `<p class="enemy-intent-${action}">${action} ${value}</p>`
 }
 
 function showOutOfManaMessage(event) {

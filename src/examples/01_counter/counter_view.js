@@ -8,7 +8,7 @@ class CounterView extends ReactiveElement {
         this.style.display = 'block'
         return html `
             <button @click="${this.eventHandler(increase)}">+</button>
-            <input type="number" .value="${this.state && this.state.value}"
+            <input type="number" .value="${this.state.value}"
                                  @change="${this.eventHandler(set)}">
             <button @click="${this.eventHandler(decrease)}">-</button>
         `
