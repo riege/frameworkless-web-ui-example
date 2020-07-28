@@ -7,4 +7,13 @@ for (let k in cards) {
     Object.freeze(cards[k])
 }
 Object.freeze(cards)
-export { cards }
+
+function deck() {
+    const result = Array(13)
+    result.fill(cards.ATTACK, 0, 5)
+    result.fill(cards.BLOCK, 5, 10)
+    result.fill(cards.DEFEND, 10, 13)
+    return result
+}
+
+export { cards, deck }

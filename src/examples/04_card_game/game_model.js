@@ -1,4 +1,4 @@
-import { cards } from './cards.js'
+import { deck } from './cards.js'
 import { immerable } from '../../deps/immer.js'
 
 const STATE_WELCOME = 'GAME_STATE_WELCOME'
@@ -51,18 +51,10 @@ export class GameModel {
             },
             cards: {
                 hand: [],
-                draw: GameModel.deck(),
+                draw: deck(),
                 discard: [],
             },
         })
-    }
-
-    static deck() {
-        const result = Array(13)
-        result.fill(cards.ATTACK, 0, 5)
-        result.fill(cards.BLOCK, 5, 10)
-        result.fill(cards.DEFEND, 10, 13)
-        return result
     }
 
     startTurn(state) {

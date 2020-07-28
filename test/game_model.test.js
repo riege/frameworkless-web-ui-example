@@ -1,7 +1,7 @@
 import { expect } from './mocha.js'
 import { GameModel } from '../src/examples/04_card_game/game_model.js'
 import * as gm from '../src/examples/04_card_game/game_model.js'
-import { cards } from '../src/examples/04_card_game/cards.js'
+import { cards, deck } from '../src/examples/04_card_game/cards.js'
 
 function s(object) {
     return JSON.stringify(object, null, 4)
@@ -33,7 +33,7 @@ describe('gameModel', function() {
             },
             cards: {
                 hand: [],
-                draw: GameModel.deck(),
+                draw: deck(),
                 discard: [],
             },
         })
