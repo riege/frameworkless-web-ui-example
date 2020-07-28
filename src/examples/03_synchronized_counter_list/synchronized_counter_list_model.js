@@ -37,7 +37,3 @@ export class SynchronizedCounterListModel {
     }
 
 }
-
-export function setSync(model, value) {
-    model.synchronized = value
-}

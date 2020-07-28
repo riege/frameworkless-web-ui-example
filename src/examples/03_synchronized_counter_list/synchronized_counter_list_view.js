@@ -1,7 +1,6 @@
 import '../01_counter/counter_view.js'
 import { ReactiveElement } from '../../base/elements.js'
 import { html } from '../../deps/lit-html.js'
-import { setSync } from './synchronized_counter_list_model.js'
 
 class SynchronizedCounterListView extends ReactiveElement {
 
@@ -13,10 +12,7 @@ class SynchronizedCounterListView extends ReactiveElement {
         return html`
             <h5>Number of counters</h5>
             <counter-view model="${this.subModel('counterCounter')}"></counter-view>
-            <input class="sync" type="checkbox"
-                .checked="${this.state.syncronized}"
-                @change="${this.dispatchChecked(setSync)}"
-            >synchronize</input>
+            <bound-checkbox model="${this.subModel('synchronized')}">synchronize</bound-checkbox>
             ${this.counters(this.state.counters)}
         `
     }

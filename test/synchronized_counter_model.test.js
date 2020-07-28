@@ -1,4 +1,4 @@
-import { SynchronizedCounterModel, setSync } from '../src/examples/02_synchronized_counters/synchronized_counter_model.js'
+import { SynchronizedCounterModel } from '../src/examples/02_synchronized_counters/synchronized_counter_model.js'
 import { checkModelClass } from './base_model.test.js'
 import { increase, decrease, set } from '../src/examples/01_counter/counter_model.js'
 import { expect } from './mocha.js'
@@ -58,7 +58,7 @@ describe('SynchronizedCounterModel', function() {
         this.testValue('counterC', 3)
 
         // synchronize
-        setSync(this.state, true)
+        this.state.synchronized = true
         this.testValue('counterA', 1)
         this.testValue('counterB', 1)
         this.testValue('counterC', 1)
@@ -76,7 +76,7 @@ describe('SynchronizedCounterModel', function() {
         this.testValue('counterB', 5)
 
         // unsynchronize
-        setSync(this.state, false)
+        this.state.synchronized = false
         // counterA retains synchronized value
         this.testValue('counterA', 5)
         this.testValue('counterB', 2)
