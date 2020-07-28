@@ -51,8 +51,8 @@ export class GameModel {
             },
             cards: {
                 hand: [],
-                draw: deck(),
-                discard: [],
+                drawPile: deck(),
+                discardPile: [],
             },
         })
     }
@@ -64,15 +64,15 @@ export class GameModel {
             state.state = STATE_GAME_OVER
         }
         while (state.cards.hand.length > 0) {
-            state.cards.discard.push(state.cards.hand.pop())
+            state.cards.discardPile.push(state.cards.hand.pop())
         }
         for (let i = 0; i < 5; i++) {
-            if (state.cards.draw.length <= 0) {
-                state.cards.draw = state.cards.discard
-                shuffle(state.cards.draw)
-                state.cards.discard = []
+            if (state.cards.drawPile.length <= 0) {
+                state.cards.drawPile = state.cards.discardPile
+                shuffle(state.cards.drawPile)
+                state.cards.discardPile = []
             }
-            state.cards.hand.push(state.cards.draw.pop())
+            state.cards.hand.push(state.cards.drawPile.pop())
         }
         state.player.mana = MANA_PER_TURN
         state.player.block = 0
@@ -113,7 +113,7 @@ export function playCard(model, cardIndex) {
     if (model.player.mana > 0) {
         const card = model.cards.hand[cardIndex]
         model.cards.hand = model.cards.hand.filter((_, i) => i != cardIndex)
-        model.cards.discard.push(card)
+        model.cards.discardPile.push(card)
         model.takeDamage(model.enemy, card.damage ? card.damage : 0)
         model.player.block += card.block ? card.block : 0
         model.player.mana -= 1

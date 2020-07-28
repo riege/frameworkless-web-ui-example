@@ -33,8 +33,8 @@ describe('gameModel', function() {
             },
             cards: {
                 hand: [],
-                draw: deck(),
-                discard: [],
+                drawPile: deck(),
+                discardPile: [],
             },
         })
     })
@@ -204,12 +204,12 @@ describe('gameModel', function() {
             this.state.cards.hand = [cards.BLOCK, cards.ATTACK, cards.BLOCK, cards.ATTACK]
             this.performAction(gm.playCard, 3)
             expect(this.state.cards.hand).to.deep.equal([cards.BLOCK, cards.ATTACK, cards.BLOCK])
-            expect(this.state.cards.discard).to.deep.equal([cards.ATTACK])
+            expect(this.state.cards.discardPile).to.deep.equal([cards.ATTACK])
             expect(this.state.player.mana).to.equal(2)
 
             this.performAction(gm.playCard, 0)
             expect(this.state.cards.hand).to.deep.equal([cards.ATTACK, cards.BLOCK])
-            expect(this.state.cards.discard).to.deep.equal([cards.ATTACK, cards.BLOCK])
+            expect(this.state.cards.discardPile).to.deep.equal([cards.ATTACK, cards.BLOCK])
             expect(this.state.player.mana).to.equal(1)
         })
 
@@ -220,7 +220,7 @@ describe('gameModel', function() {
             this.state.cards.hand = [cards.BLOCK]
             this.performAction(gm.playCard, 0)
             expect(this.state.cards.hand).to.deep.equal([cards.BLOCK])
-            expect(this.state.cards.discard).to.deep.equal([])
+            expect(this.state.cards.discardPile).to.deep.equal([])
             expect(this.state.player.mana).to.equal(0)
             expect(this.state.player.block).to.equal(0)
         })
@@ -230,11 +230,11 @@ describe('gameModel', function() {
             const fiveAttacks = () => Array(5).fill(cards.ATTACK)
             const fiveBlocks = () => Array(5).fill(cards.BLOCK)
             this.state.cards.hand = fiveBlocks()
-            this.state.cards.draw = fiveAttacks().concat(fiveAttacks())
+            this.state.cards.drawPile = fiveAttacks().concat(fiveAttacks())
 
             this.performAction(gm.endTurn)
-            expect(this.state.cards.discard).to.deep.equal(fiveBlocks())
-            expect(this.state.cards.draw).to.deep.equal(fiveAttacks())
+            expect(this.state.cards.discardPile).to.deep.equal(fiveBlocks())
+            expect(this.state.cards.drawPile).to.deep.equal(fiveAttacks())
             expect(this.state.cards.hand).to.deep.equal(fiveAttacks())
         })
 
@@ -244,16 +244,16 @@ describe('gameModel', function() {
             const threeBlocks = () => Array(3).fill(cards.BLOCK)
             const twoDefends = () => Array(2).fill(cards.DEFEND)
             this.state.cards.hand = threeAttacks().concat(twoDefends())
-            this.state.cards.draw = threeBlocks()
+            this.state.cards.drawPile = threeBlocks()
             const permutations = new Set()
 
             for (let i = 0; i < 100; i++) {
                 this.performAction(gm.endTurn)
-                expect(this.state.cards.discard).to.deep.equal([])
+                expect(this.state.cards.discardPile).to.deep.equal([])
                 expect(this.state.cards.hand.length).to.equal(5)
-                expect(this.state.cards.draw.length).to.equal(3)
+                expect(this.state.cards.drawPile.length).to.equal(3)
                 const permutation = this.state.cards.hand
-                    .concat(this.state.cards.draw)
+                    .concat(this.state.cards.drawPile)
                     .map(c => c.name)
                     .join()
                 permutations.add(permutation)
@@ -263,11 +263,11 @@ describe('gameModel', function() {
 
         it('should have a deck with 13 cards', () => {
             this.performAction(gm.startGame)
-            const deck = this.state.cards.draw.concat(this.state.cards.hand)
+            const deck = this.state.cards.drawPile.concat(this.state.cards.hand)
             const count = (card) => deck.filter(c => c == card).length
 
             expect(this.state.cards.hand.length).to.equal(5)
-            expect(this.state.cards.draw.length).to.equal(8)
+            expect(this.state.cards.drawPile.length).to.equal(8)
             expect(deck.length).to.equal(13)
             expect(count(cards.ATTACK)).to.equal(5)
             expect(count(cards.BLOCK)).to.equal(5)
