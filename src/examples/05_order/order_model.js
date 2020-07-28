@@ -1,8 +1,8 @@
 import { immerable } from "../../deps/immer.js";
 import { AFTER_ACTION } from "../../base/store.js";
 import { VALIDATION_RESULTS } from "../../base/validation.js";
-import { isEmpty } from "../../base/util.js";
 import { submitOrderTask } from './order_service.js';
+import { PostalAddressModel } from './postal_address_model.js';
 
 function constant(name) {
     return `OrderModel#${name}`
@@ -15,30 +15,6 @@ export const STATE_ORDERED = constant('STATE_ORDERED')
 export const PAYMENT_PAYPAL = constant('PAYMENT_PAYPAL')
 export const PAYMENT_CASH_ON_DELIVERY = constant('PAYMENT_CASH_ON_DELIVERY')
 export const PAYMENT_INVOICE = constant('PAYMENT_INVOICE')
-
-function validateNotEmpty(object, prop) {
-    const value = object[prop]
-    if (isEmpty(value)) {
-        return {key: prop, message: `${prop} should not be empty`}
-    }
-}
-
-export class PostalAddressModel {
-    constructor() {
-        this[immerable] = true
-        this.name = null
-        this.street = null
-        this.zipCode = null
-        this.city = null
-        this.country = null
-    }
-
-    [AFTER_ACTION]() {
-        this[VALIDATION_RESULTS] = Object.getOwnPropertyNames(this)
-            .map(property => validateNotEmpty(this, property))
-            .filter(r => r !== undefined)
-    }
-}
 
 export class OrderModel {
     constructor() {
