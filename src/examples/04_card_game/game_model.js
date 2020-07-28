@@ -6,13 +6,20 @@ const STATE_GAME = 'GAME_STATE_GAME'
 const STATE_GAME_OVER = 'GAME_STATE_GAME_OVER'
 const STATE_VICTORY = 'GAME_STATE_VICTORY'
 
+const MANA_PER_TURN = 3
+
+const BASE_STRENGTH = 5
+const VARIANT_STRENGTH = 4
+const BLOCK_FACTOR = 1.5
+const ATTACK_FACTOR = 1.9
+
 function generateAction() {
     const names = ['willBlock', 'willAttack']
-    const factors = [1.5, 1.9]
-    const i = Math.floor(Math.random() * names.length)
-    const name = names[i]
-    const factor = factors[i]
-    const value = Math.floor((Math.random() * 4 + 5) * factor)
+    const factors = [BLOCK_FACTOR, ATTACK_FACTOR]
+    const actionIndex = Math.floor(Math.random() * names.length)
+    const name = names[actionIndex]
+    const factor = factors[actionIndex]
+    const value = Math.floor((Math.random() * VARIANT_STRENGTH + BASE_STRENGTH) * factor)
     return { name, value }
 }
 
@@ -33,7 +40,7 @@ export class GameModel {
             turn: 0,
             player: {
                 hp: 100,
-                mana: 3,
+                mana: MANA_PER_TURN,
                 block: 0,
             },
             enemy: {
@@ -75,7 +82,7 @@ export class GameModel {
             }
             state.cards.hand.push(state.cards.draw.pop())
         }
-        state.player.mana = 3
+        state.player.mana = MANA_PER_TURN
         state.player.block = 0
     }
 
