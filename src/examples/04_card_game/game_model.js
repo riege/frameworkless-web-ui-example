@@ -57,56 +57,57 @@ export class GameModel {
         })
     }
 
-    startTurn(state) {
-        state.turn += 1
-        this.generateEnemyAction(state.enemy)
-        if (state.player.hp <= 0) {
-            state.state = STATE_GAME_OVER
-        }
-        while (state.cards.hand.length > 0) {
-            state.cards.discardPile.push(state.cards.hand.pop())
-        }
-        for (let i = 0; i < 5; i++) {
-            if (state.cards.drawPile.length <= 0) {
-                state.cards.drawPile = state.cards.discardPile
-                shuffle(state.cards.drawPile)
-                state.cards.discardPile = []
-            }
-            state.cards.hand.push(state.cards.drawPile.pop())
-        }
-        state.player.mana = MANA_PER_TURN
-        state.player.block = 0
-    }
-
-    takeDamage(character, damage) {
-        const newBlock = character.block - damage
-        if (newBlock < 0) {
-            character.hp += newBlock
-            character.block = 0
-        } else {
-            character.block = newBlock
-        }
-    }
-
-    generateEnemyAction(enemy) {
-        enemy.willAttack = 0
-        enemy.willBlock = 0
-        const parts = [generateAction(), generateAction()]
-        parts.forEach(p => enemy[p.name] += p.value)
-    }
-
 }
+
+function startTurn(state) {
+    state.turn += 1
+    generateEnemyAction(state.enemy)
+    if (state.player.hp <= 0) {
+        state.state = STATE_GAME_OVER
+    }
+    while (state.cards.hand.length > 0) {
+        state.cards.discardPile.push(state.cards.hand.pop())
+    }
+    for (let i = 0; i < 5; i++) {
+        if (state.cards.drawPile.length <= 0) {
+            state.cards.drawPile = state.cards.discardPile
+            shuffle(state.cards.drawPile)
+            state.cards.discardPile = []
+        }
+        state.cards.hand.push(state.cards.drawPile.pop())
+    }
+    state.player.mana = MANA_PER_TURN
+    state.player.block = 0
+}
+
+function takeDamage(character, damage) {
+    const newBlock = character.block - damage
+    if (newBlock < 0) {
+        character.hp += newBlock
+        character.block = 0
+    } else {
+        character.block = newBlock
+    }
+}
+
+function generateEnemyAction(enemy) {
+    enemy.willAttack = 0
+    enemy.willBlock = 0
+    const parts = [generateAction(), generateAction()]
+    parts.forEach(p => enemy[p.name] += p.value)
+}
+
 
 export function startGame(model) {
     Object.assign(model, new GameModel())
     model.state = STATE_GAME
-    model.startTurn(model)
+    startTurn(model)
 }
 
 export function endTurn(model) {
-    model.takeDamage(model.player, model.enemy.willAttack)
+    takeDamage(model.player, model.enemy.willAttack)
     model.enemy.block = model.enemy.willBlock
-    model.startTurn(model)
+    startTurn(model)
 }
 
 export function playCard(model, cardIndex) {
@@ -114,7 +115,7 @@ export function playCard(model, cardIndex) {
         const card = model.cards.hand[cardIndex]
         model.cards.hand = model.cards.hand.filter((_, i) => i != cardIndex)
         model.cards.discardPile.push(card)
-        model.takeDamage(model.enemy, card.damage ? card.damage : 0)
+        takeDamage(model.enemy, card.damage ? card.damage : 0)
         model.player.block += card.block ? card.block : 0
         model.player.mana -= 1
         if (model.enemy.hp <= 0) {
