@@ -39,29 +39,33 @@ function execute(model, {action, task, request}) {
         .catch(error => {console.error(error); dispatch(model, action, {error, request})})
 }
 
-function actionReducer(state, {model, action, args}) {
+function actionReducer(state, action) {
     let tasks = []
-    const newState = produce(state, s => {
-        if (action === setValue) {
-            setProperty(s, model, args)
-        } else {
-            const modelState = extractProperty(s, model)
-            tasks.push(action(modelState, args))
-        }
-        callAfterActions(s)
+    const newState = produce(state, mutableState => {
+        executeAction(mutableState, action, tasks)
+        callAfterActions(mutableState)
     })
-    tasks.filter(t => t).flat().forEach(t => execute(model, t))
+    tasks.filter(t => t).flat().forEach(t => execute(action.model, t))
     return newState
 }
 
-function callAfterActions(state) {
-    if (state === null || typeof(state) !== 'object') {
+function executeAction(mutableState, {model, action, args}, tasks) {
+    if (action === setValue) {
+        setProperty(mutableState, model, args)
+    } else {
+        const modelState = extractProperty(mutableState, model)
+        tasks.push(action(modelState, args))
+    }
+}
+
+function callAfterActions(mutableState) {
+    if (mutableState === null || typeof(mutableState) !== 'object') {
         return
     }
-    for (const key in state) {
-        callAfterActions(state[key])
+    for (const key in mutableState) {
+        callAfterActions(mutableState[key])
     }
-    if (state[AFTER_ACTION]) {
-        state[AFTER_ACTION]()
+    if (mutableState[AFTER_ACTION]) {
+        mutableState[AFTER_ACTION]()
     }
 }
