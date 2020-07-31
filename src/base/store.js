@@ -1,39 +1,28 @@
 import produce from '../deps/immer.js'
-import { createStore } from '../deps/redux.js'
 import { extractProperty, setProperty } from '../base/util.js'
 
-const ACTION_INIT = 'ACTION_INIT'
-const ACTION_FUNCTION = 'ACTION_FUNCTION'
 export const AFTER_ACTION = Symbol('store#AFTER_ACTION')
 
-const store = createStore(reducer)
-const noopAction = {model: '', action: () => undefined, args: undefined}
-
-function reducer(state, action) {
-    switch (action.type) {
-        case ACTION_INIT:
-            return actionReducer(action.payload, noopAction)
-        case ACTION_FUNCTION:
-            return actionReducer(state, action.payload)
-        default:
-            return state
-    }
-}
+let state
+let listeners = []
 
 export function init(initialState) {
-    store.dispatch({type: ACTION_INIT, payload: initialState})
+    const noopAction = { model: '', action: () => undefined }
+    state = actionReducer(initialState, noopAction)
+    listeners.forEach(f => f())
 }
 
 export function dispatch(model, action, args) {
-    store.dispatch({type: ACTION_FUNCTION, payload: {model, action, args}})
+    state = actionReducer(state, { model, action, args})
+    listeners.forEach(f => f())
 }
 
 export function getState() {
-    return store.getState()
+    return state
 }
 
 export function subscribe(listener) {
-    return store.subscribe(listener)
+    listeners.push(listener)
 }
 
 export function setValue() {
