@@ -2,6 +2,7 @@ import { ReactiveElement } from '../../base/elements.js'
 import { html } from '../../deps/lit-html.js'
 import { STATE_VICTORY } from './game_model.js'
 import { startGame, playCard, endTurn, STATE_WELCOME, STATE_GAME, STATE_GAME_OVER } from './game_model.js'
+import { calculateAnimationClasses, showOutOfManaMessage } from './animations.js'
 
 function characterStats(char) {
     const row = (name, val) => val !== undefined ? html `<tr class="${name}"><td>${name}:</td><td>${val}</td></tr>` : null
@@ -49,50 +50,20 @@ function enemyIntent(action, value) {
     return html `<p class="enemy-intent-${action}">${action} ${value}</p>`
 }
 
-function showOutOfManaMessage(event) {
-    const element = document.createElement('game-oom-message')
-    element.style.position = 'fixed'
-    element.style.top = `${event.clientY - 50}px`
-    element.style.left = `${event.clientX - element.clientWidth}px`
-    document.body.appendChild(element)
-}
-
-class OutOfManaMessage extends HTMLElement {
-    connectedCallback() {
-        setTimeout(() => this.remove(), 1000)
-        this.innerHTML = `
-            <div class="game-oom-message"">
-                <h2>Out of Mana</h2>
-                <p>End turn to gain mana</p>
-            </div>`
-        this.style.animation = 'fade-out-up 1s ease-out forwards'
-        this.style.color = "#000"
-        this.style.textShadow = "-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff"
-    }
-}
-customElements.define('game-oom-message', OutOfManaMessage)
-
 class GameView extends ReactiveElement {
+
     render() {
+        this.resetAnimations()
+
         const game = this.state
-        let discarded = ""
-        if (this.previousGame && this.previousGame.turn !== game.turn) {
-            this.classList.remove('game-animation-draw-cards')
-            void this.offsetWidth;
-            this.classList.add('game-animation-draw-cards')
-            if (this.previousGame.state === STATE_GAME) {
-                this.classList.remove('game-animation-discard-cards')
-                void this.offsetWidth
-                this.classList.add('game-animation-discard-cards')
-            }
+
+
+        let discarded
+        if (this.previousGame && game.turn !== this.previousGame.turn) {
             discarded = this.cards(this.previousGame.cards.hand, "discarded")
         }
-        this.animateNumber(this.previousGame, game, 'player', 'hp')
-        this.animateNumber(this.previousGame, game, 'player', 'block')
-        this.animateNumber(this.previousGame, game, 'enemy', 'hp')
-        this.animateNumber(this.previousGame, game, 'enemy', 'block')
-        
-        this.previousGame = game
+
+        this.previousGame = this.state
         return html `
             ${this.arena(game)}
             ${player(game.player)}
@@ -102,49 +73,48 @@ class GameView extends ReactiveElement {
         `
     }
 
-cards(hand, cssClass, mana) {
-    return html `
-        <div class="player-hand ${cssClass}">
-            ${hand.map((card, i) => this.card(mana, card, i))}
-        </div>
-    `
-}
-
- card(mana, card, index) {
-    const handler = mana > 0 ? this.dispatch(playCard, index) : showOutOfManaMessage
-    return html `
-        <div class="card card-${index} card-${card.name}" @click="${handler}">
-            <h1>${card.name}</h1>
-            <p>
-                ${card.description}
-            </p>
-        </div>
-    `
-}
-
- arena(game) {
-    return html `<div class="arena">${this.arenaContent(game)}</div>`
-}
-
- arenaContent(game) {
-    switch (game.state) {
-        case STATE_WELCOME:
-            return html `<h2>Welcome to the game</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
-        case STATE_GAME:
-            return html `<button @click="${this.dispatch(endTurn)}">End turn</button>`
-        case STATE_GAME_OVER:
-            return html `<h2>Defeat!</h2><button @click="${this.dispatch(startGame)}">Try again</button>`
-        case STATE_VICTORY:
-            return html `<h2>Victory!</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
+    cards(hand, cssClass, mana) {
+        return html `
+            <div class="player-hand ${cssClass}">
+                ${hand.map((card, i) => this.card(mana, card, i))}
+            </div>
+        `
     }
-}
 
-    animateNumber(previousGame, game, char, property) {
-        if (previousGame && previousGame[char][property] !== game[char][property]) {
-            this.classList.remove(`game-animation-${char}-${property}`)
-            void this.offsetWidth;
-            this.classList.add(`game-animation-${char}-${property}`)
+    card(mana, card, index) {
+        const handler = mana > 0 ? this.dispatch(playCard, index) : showOutOfManaMessage
+        return html `
+            <div class="card card-${index} card-${card.name}" @click="${handler}">
+                <h1>${card.name}</h1>
+                <p>
+                    ${card.description}
+                </p>
+            </div>
+        `
+    }
+
+    arena(game) {
+        return html `<div class="arena">${this.arenaContent(game)}</div>`
+    }
+
+    arenaContent(game) {
+        switch (game.state) {
+            case STATE_WELCOME:
+                return html `<h2>Welcome to the game</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
+            case STATE_GAME:
+                return html `<button @click="${this.dispatch(endTurn)}">End turn</button>`
+            case STATE_GAME_OVER:
+                return html `<h2>Defeat!</h2><button @click="${this.dispatch(startGame)}">Try again</button>`
+            case STATE_VICTORY:
+                return html `<h2>Victory!</h2><button @click="${this.dispatch(startGame)}">Start new game</button>`
         }
+    }
+
+    resetAnimations() {
+        const animationClasses = calculateAnimationClasses(this.previousGame, this.state)
+        animationClasses.forEach(c => this.classList.remove(c))
+        void this.offsetWidth
+        animationClasses.forEach(c => this.classList.add(c))
     }
 }
 customElements.define('game-view', GameView)
