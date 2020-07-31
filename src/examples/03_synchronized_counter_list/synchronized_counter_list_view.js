@@ -4,8 +4,16 @@ import { html } from '../../deps/lit-html.js'
 
 class SynchronizedCounterListView extends ReactiveElement {
 
+    counter(index) {
+        return html`
+            <h5>Counter ${index+1}</h5>
+            <counter-view
+                model="${this.subModel(`counters.${index}`)}">
+            </counter-view>`
+    }
+
     counters(counters) {
-        return counters.map((_c, i) => html`<h5>Counter ${i}</h5> <counter-view model="${this.subModel(`counters.${i}`)}"></counter-view>`)
+        return counters.map((_c, i) => this.counter(i))
     }
 
     render() {
