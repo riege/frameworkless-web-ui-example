@@ -7,11 +7,12 @@ const ACTION_FUNCTION = 'ACTION_FUNCTION'
 export const AFTER_ACTION = Symbol('store#AFTER_ACTION')
 
 const store = createStore(reducer)
+const noopAction = {model: '', action: () => undefined, args: undefined}
 
 function reducer(state, action) {
     switch (action.type) {
         case ACTION_INIT:
-            return action.payload
+            return actionReducer(action.payload, noopAction)
         case ACTION_FUNCTION:
             return actionReducer(state, action.payload)
         default:
@@ -20,16 +21,15 @@ function reducer(state, action) {
 }
 
 export function init(initialState) {
-    initialState = produce(initialState, s => actionReducer(s, {model: '', action: () => null, args: null}))
     store.dispatch({type: ACTION_INIT, payload: initialState})
+}
+
+export function dispatch(model, action, args) {
+    store.dispatch({type: ACTION_FUNCTION, payload: {model, action, args}})
 }
 
 export function getState() {
     return store.getState()
-}
-
-export function dispatch(model, action, args) {
-    store.dispatch({type: 'ACTION_FUNCTION', payload: {model, action, args}})
 }
 
 export function subscribe(listener) {
