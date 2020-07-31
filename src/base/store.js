@@ -33,7 +33,7 @@ export function setValue() {
 }
 
 /* global console */
-function execute(model, {action, task, request}) {
+function executeTask(model, {action, task, request}) {
     task()
         .then(result => dispatch(model, action, {result, request}))
         .catch(error => {console.error(error); dispatch(model, action, {error, request})})
@@ -45,7 +45,7 @@ function actionReducer(state, action) {
         executeAction(mutableState, action, tasks)
         callAfterActions(mutableState)
     })
-    tasks.filter(t => t).flat().forEach(t => execute(action.model, t))
+    tasks.filter(t => t).flat().forEach(t => executeTask(action.model, t))
     return newState
 }
 
