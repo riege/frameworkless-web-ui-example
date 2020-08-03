@@ -74,10 +74,12 @@ If many aspects of this demo are new to you, the following order is recommended 
 
 1. Take a look at the examples in action if you haven't already
 2. Read through this README file if you haven't already
-3. Read the source code of the first example HTML `src/examples/01_counter/index.html`
-3. Read the source code of the first model `src/examples/01_counter/counter_model.js`
-3. Read the source code of the first view `src/examples/01_counter/counter_view.js`
+3. Read the source code of the first example
+    1. Start with the HTML page `src/examples/01_counter/index.html`
+    2. Continue with the model `src/examples/01_counter/counter_model.js`
+    3. Finally, see how the view is defined in `src/examples/01_counter/counter_view.js`
 4. Read the code in `src/base`, which provides the infrastructure for the examples, in alphabetical order
-5. Continue with the rest of the examples
+5. Take a look at how dependencies are handled in `src/deps`
+6. Continue with the rest of the examples
 
 The source files contain detailed explanations written with this reading order in mind.

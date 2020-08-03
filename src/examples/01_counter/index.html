@@ -8,11 +8,16 @@
 </head>
 
 <body>
+    <!--
+        Basic document structure using standard tags:
+        header, footer, navigation, and main
+    -->
     <main>
         <header>
             <h1>Example 01: Counters</h1>
         </header>
 
+        <!-- A navigation that links to the other examples -->
         <nav>
             <ol start="0">
                 <li><a href="../00_all/">All in One</a></li>
@@ -25,15 +30,41 @@
             </ol>
         </nav>
 
+        <!--
+            This is where we bind the view (our custom components)
+            to the model that is defined in the script tag below.
+
+            The example-view is a static component that adds
+            a header and a box containing its content.
+
+            The counter-view is a custom component defined in
+            counter_view.js. The model attribute is used in all
+            components that make use of data binding to define
+            which part of the state tree a view should bind to.
+
+            The state tree for this page is defined further below
+            in a script tag.
+        -->
         <example-view class="single-example" title="Counter">
+            <!-- Counter A has two views bound to the same model -->
             <h4>Counter A</h4>
             <counter-view model="counterModelA"></counter-view>
             <h4>Counter A</h4>
             <counter-view model="counterModelA"></counter-view>
+
+            <!-- Counter B is bound to a different model than counter A -->
             <h4>Counter B</h4>
             <counter-view model="counterModelB"></counter-view>
         </example-view>
 
+        <!--
+            A static footer linking to external documentation of
+            the libraries used.
+
+            Note that we don't actually use the Redux library, because
+            it only saves us about 10 lines of code. Nonetheless, we use
+            the same architecture for unidirectional data flow.
+        -->
         <footer>
             Build with
             <a href="https://lit-html.polymer-project.org/">lit-html</a> and
@@ -41,13 +72,41 @@
             <a href="https://redux.js.org/">Redux</a>-like architecture.
         </footer>
     </main>
+
+    <!--
+        It's a best practice to put script tags at the bottom of the
+        HTML. This is because script tags can block the browser from
+        rendering the HTML.
+    -->
+
+    <!--
+        The immer library currently doesn't distribute browser-compatible ES6 modules,
+        so we use the UMD build, which is then wrapped into a module
+        in src/deps/immer.js, which includes a more detailed explanation.
+    -->
     <script src="https://cdn.jsdelivr.net/npm/immer@7.0.7/dist/immer.umd.development.js"></script>
+
+    <!--
+        We use a module to initialize our model
+        and load the custom components needed.
+
+        This is necessary because only a module can import other modules.
+        More details about modules are explained in counter_model.js.
+    -->
     <script type="module">
         import "../example_view.js"
         import './counter_view.js'
         import { CounterModel } from './counter_model.js'
         import { init } from '../../base/store.js'
 
+        /*
+            Initialize the state. This application uses two different
+            counters, backed by two counter models.
+
+            The init method takes any object and initializes our state
+            to a immutable copy of that object. Other examples use the same
+            init method, even though the state has a completely different shape.
+        */
         init({
             counterModelA: new CounterModel(),
             counterModelB: new CounterModel(),
