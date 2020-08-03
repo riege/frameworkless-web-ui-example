@@ -23,6 +23,24 @@ footer a {
 
 nav {
     background: lightblue;
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+nav ol {
+
+}
+
+nav li {
+    display: inline-block;
+}
+
+nav li:not(:last-child):after {
+    content: " \2014 ";
+}
+
+nav a {
+
 }
 
 example-view {
