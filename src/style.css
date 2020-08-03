@@ -5,6 +5,10 @@ main {
     background: #e9dad1;
 }
 
+#mocha-stats {
+    background-color: white;
+}
+
 header {
     background: lightcoral;
     grid-column: 1 / -1;
@@ -27,20 +31,12 @@ nav {
     text-align: center;
 }
 
-nav ol {
-
-}
-
 nav li {
     display: inline-block;
 }
 
 nav li:not(:last-child):after {
     content: " \2014 ";
-}
-
-nav a {
-
 }
 
 example-view {
@@ -56,8 +52,8 @@ example-view.game, example-view.animation {
     grid-column: 1 / -1;
 }
 
-h1,
-h2 {
+main h1,
+main h2 {
     text-align: center;
 }
 

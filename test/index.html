@@ -6,9 +6,32 @@
     <title>Frameworkless Web UI - Tests</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mocha@8.0.1/mocha.css" />
+    <link rel="stylesheet" href="../src/style.css">
 </head>
 
 <body>
+    <main>
+        <header>
+            <h1>Frameworkless Web UI Tests</h1>
+        </header>
+
+        <nav>
+            <ol start="0">
+                <li><a href="../src/examples/00_all/">All in One</a></li>
+                <li><a href="../src/examples/01_counter/">Counter</a></li>
+                <li><a href="../src/examples/02_synchronized_counters/">Synchronized Counters</a></li>
+                <li><a href="../src/examples/03_synchronized_counter_list/">Synchronized List of Counters</a></li>
+                <li><a href="../src/examples/04_card_game/">Card Game</a></li>
+                <li><a href="../src/examples/05_order/">Order</a></li>
+                <li><a href="../../../test/">Unit Tests</a></li>
+            </ol>
+        </nav>
+
+
+    </main>
+
+    <p style="margin: 20px 50px">Click on the individual tests to expand them and see the code.</p>
+
     <div id="mocha"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/chai@4.2.0/chai.js"></script>
