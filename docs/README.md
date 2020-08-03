@@ -62,10 +62,11 @@ All JavaScript code is organized into
 
 The following naming conventions are used for JS modules:
 
-|| Convention || Description ||
-| *_model.js |  Contains a UI model, consisting of state and actions
-| *_view.js | Contains a custom element that provides a view for the model
-| *_service.js | Contains asynchronous tasks (like HTTP requests) that are used by the model
+| Convention | Description |
+|------------|-------------|
+| *_model.js |  Contains a UI model, consisting of state and actions |
+| *_view.js | Contains a custom element that provides a view for the model |
+| *_service.js | Contains asynchronous tasks (like HTTP requests) that are used by the model |
 
 ## Recommended reading order
 
