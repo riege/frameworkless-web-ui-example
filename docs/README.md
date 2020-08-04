@@ -22,7 +22,7 @@ Then visit http://localhost:8000.
 
 If you have Docker installed, run the following command from the root directory of this repository:
 
-    docker run -dit --name frameworkless-web-ui -p 8000:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
+    docker run -dit --name frameworkless-web-ui -p 8000:80 -v %cd%:/usr/local/apache2/htdocs/ httpd:2.4
 
 Then visit http://localhost:8000.
 
