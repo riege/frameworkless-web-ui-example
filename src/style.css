@@ -59,6 +59,7 @@ main h2 {
 
 counter-view {
     text-align: center;
+    display: block;
 }
 
 counter-view input {
