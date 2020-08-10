@@ -1,5 +1,5 @@
 import produce from '../deps/immer.js'
-import { extractProperty, setProperty } from '../base/util.js'
+import { extractProperty, setProperty } from './util.js'
 
 /*
     The store module is the linchpin of the architecture that we are using.
