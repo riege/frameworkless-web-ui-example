@@ -1,336 +1,78 @@
-main {
+body{
+    width: 80%;
+    margin: 2rem auto;
+}
+
+main{
+    height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 1em;
-    background: #e9dad1;
+    border-left: 2px aliceblue solid;
 }
 
-#mocha-stats {
-    background-color: white;
-}
-
-header {
-    background: lightcoral;
-    grid-column: 1 / -1;
-}
-
-footer {
-    background: lightcoral;
-    grid-column: 1 / -1;
-    padding: 1em;
-    text-align: center;
-}
-
-footer a {
-    color: rgb(0, 92, 230);
-}
-
-nav {
-    background: lightblue;
-    grid-column: 1 / -1;
-    text-align: center;
-}
-
-nav li {
-    display: inline-block;
-}
-
-nav li:not(:last-child):after {
-    content: " \2014 ";
-}
-
-example-view {
-    background-color: lightyellow;
-    padding: 0 1em 1em 1em;
-}
-
-example-view.single-example {
-    grid-column: 2;
-}
-
-example-view.game, example-view.animation {
-    grid-column: 1 / -1;
-}
-
-main h1,
-main h2 {
-    text-align: center;
-}
-
-counter-view {
-    text-align: center;
-    display: block;
-}
-
-counter-view input {
-    width: 50px;
-}
-
-game-view, game-animation {
-    display: grid;
-    grid-template-columns: 4fr 1fr 16fr 1fr 4fr;
-    grid-template-areas:
-        "player space1 arena space2 enemy"
-        "player space1 cards space2 enemy";
-}
-
-.arena {
-    grid-area: arena;
-    margin: auto;
-}
-
-.character-model {
-    width: 12vw;
-    height: 24vw;
-    margin: auto;
-    background-color: white;
-    border: 10px solid black;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.player-model {
-    grid-area: player;
-}
-
-.character-stats {
-    margin: auto;
-}
-
-.enemy-model {
-    grid-area: enemy;
-}
-
-.enemy-intent-Attack {
-    color: red;
-}
-
-.enemy-intent-Block {
-    color: blue;
-}
-
-.player-hand {
-    grid-area: cards;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-}
-
-.card {
-    width: 10vw;
-    height: 20vw;
-    margin: auto;
-    background-color: white;
-    border: 10px solid white;
-    border-radius: 15px;
-    position: relative;
-    bottom: 0;
-    transition: bottom .1s;
-}
-
-.card-Block {
-    border-color: blue;
-}
-
-.card-Defend {
-    border-color: violet;
-}
-
-.card-Attack {
-    border-color: red;
-}
-
-.card:hover {
-    position: relative;
-    bottom: 2vw;
-}
-
-.game-animation-draw-cards .card {
-    animation: draw-card reverse;
-    animation-fill-mode: backwards;
-    animation-delay: 1.2s;
-}
-
-.game-animation-draw-cards .card-0 {
-    animation-duration: 1s;
-}
-
-.game-animation-draw-cards .card-1 {
-    animation-duration: 0.8s;
-}
-
-.game-animation-draw-cards .card-2 {
-    animation-duration: 0.6s;
-}
-
-.game-animation-draw-cards .card-3 {
-    animation-duration: 0.4s;
-}
-
-.game-animation-draw-cards .card-4 {
-    animation-duration: 0.2s;
-}
-
-.game-animation-discard-cards .discarded .card {
-    animation: discard-card;
-    animation-fill-mode: forwards;
-    animation-duration: 0.5s;
-}
-
-.game-animation-discard-cards .discarded .card-0 {
-    animation-delay: 1.0s;
-}
-
-.game-animation-discard-cards .discarded .card-1 {
-    animation-delay: 0.8s;
-}
-
-.game-animation-discard-cards .discarded .card-2 {
-    animation-delay: 0.6s;
-}
-
-.game-animation-discard-cards .discarded .card-3 {
-    animation-delay: 0.4s;
-}
-
-.game-animation-discard-cards .discarded .card-4 {
-    animation-delay: 0.2s;
-}
-
-.game-animation-player-hp .player-stats .Health {
-    animation: big-number 1s; 
-}
-
-.game-animation-player-block .player-stats .Block {
-    animation: big-number 1s; 
-}
-
-.game-animation-enemy-hp .enemy-stats .Health {
-    animation: big-number 1s; 
-}
-
-.game-animation-enemy-block .enemy-stats .Block {
-    animation: big-number 1s; 
-}
-
-@keyframes discard-card {
-    0% {
-        transform: translateX(0);
+@media screen and (max-width: 40em){
+    main{
+        grid-template-rows: 1fr 2fr 6fr 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "status"
+        "menu"
+        "view"
+        "footer";
     }
-    99% {
-        transform: translateX(150vw);
+    ul li{
+        display: inline;
     }
-    100% {
-        transform: translateX(150vw) scale(0);
+}
+
+@media screen and (min-width: 40em){
+    main{
+        grid-template-rows: 1fr 6fr 1fr;
+        grid-template-columns: 1fr 4fr;
+        grid-template-areas: 
+        "status status"
+        "menu view"
+        "footer footer";
     }
-  }
-
-@keyframes draw-card {
-    0% {
-              transform: translateX(0);
-    }
-    100% {
-              transform: translateX(-150vw);
-    }
-  }
-
-  @keyframes big-number {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(2);
-    }
-    100% {
-        transform: scale(1);
-    }
-  }
-
-  @keyframes fade-out-up {
-      0% {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-      }
-      40% {
-          opacity: 1;
-          transform: scale(1.5) translateY(0);
-      }
-      60% {
-          opacity: 1;
-          transform: scale(1.5) translateY(0);
-      }
-      100% {
-          opacity: 0;
-          transform: scale(2) translateY(-5vw);
-      }
-  }
-
-example-view.order {
-    grid-column: 1 / -1;
 }
 
-bound-textfield {
-    padding-left: 1em;
+header{
+    grid-area: status;
+    margin: 1rem auto;
+}
+footer{
+    grid-area: footer;
 }
 
-bound-textfield label {
-    display: block;
+nav{
+    grid-area: menu;
 }
 
-bound-textfield input {
-    display: block;
-    padding-left: 1em;
-    width: 14em;
+.view{
+    overflow: auto;
+    height: 80vh;
 }
 
-.validation {
-    position: relative;
-    top: -1.3em;
+b-preview{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    grid-area: view;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+b-add form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.validation > div {
-    position: absolute;
+b-list{
+    width: 80%;
+    padding-top: 10%;
 }
-
-.validation-ok {
-    color: green;
-}
-
-.validation-error {
-    color: red;
-}
-
-.validation-icon {
-    padding: 1px;
-    padding-left: 0.2em
-}
-
-.validation-message {
-    visibility: hidden;
-    background: lightgrey;
-    padding: 0.2em 1em;
-    border-radius: 0.5em;
-    top: 2em;
-    left: 1em;
-}
-
-.validation-message:before {
-    content: "";
-    width: 0px;
-    height: 0px;
-    position: absolute;
-    border-left: 10px solid lightgrey;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid lightgrey;
-    border-top: 10px solid transparent;
-    left: 2em;
-    top: -1em;
-}
-
-.validation-error:hover .validation-message, input:focus + .validation-error .validation-message {
-    visibility: visible;
-}
-
-form.order {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+li{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 30%;
 }

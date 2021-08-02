@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>[BCE template]</title>
+  <link rel="stylesheet" href="bulma.css">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="images/png" href="images/favicon.png">
+</head>
+<body>
+  <main>
+    <header>
+      <h1 class="title">Shipments (Path Propagation)</h1>
+    </header>
+
+    <nav>
+        <p>No Nav</p>
+    </nav>
+    <section class="view">
+        <h2 class="subtitle">>>magic-less, minimalistic, opinionated, standard-based, quickstarter</h2>
+
+        <p>We keep normalized entities in the store.</p>
+
+        <p>It is recommended for "entities" (see <a href="https://redux.js.org/faq/organizing-state#how-do-i-organize-nested-or-duplicate-data-in-my-state">Redux FAQ: How do I organize nested or duplicate data in my state?</a>).</p>
+
+        <ul>
+            <li><a href="https://redux.js.org/usage/structuring-reducers/normalizing-state-shape">Redux: Normalizing State Shape</a></li>
+            <li><a href="https://redux.js.org/usage/structuring-reducers/updating-normalized-data">Redux: Updating Normalized Data</a></li>
+            <li><a href="https://github.com/paularmstrong/normalizr">Normalizr</a> &mdash; a recommended &quot;OR Mapper&quot; for Redux</li>
+        </ul>
+
+        <hr/>
+        <b-normalizedshipmentlist></b-normalizedshipmentlist>
+
+
+    </section>
+    <footer>powered by: <a href="https://airhacks.live">airhacks.live</a></footer>
+  </main>
+  <script src="init.js"></script>
+  <script src="shipments/boundary/ShipmentList.js" type="module"></script>
+</body>
+</html>
